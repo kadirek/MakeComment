@@ -1,4 +1,4 @@
-package com.example.makecomment;
+package com.example.makecomment.Models;
 
 public class ParseItem {
     private String imgUrl;

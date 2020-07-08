@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "803752469475",
+    "firebase_url": "https://makecomment-6de9d.firebaseio.com",
+    "project_id": "makecomment-6de9d",
+    "storage_bucket": "makecomment-6de9d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:803752469475:android:62441319c26f6874a5f6d6",
+        "android_client_info": {
+          "package_name": "com.example.makecomment"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "803752469475-4k1kl6svpb2f0lj1dkau2btms9tqrgds.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeo3IxN2RDNtRPLROLLLh-zTtG9rOgYzo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "803752469475-4k1kl6svpb2f0lj1dkau2btms9tqrgds.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
