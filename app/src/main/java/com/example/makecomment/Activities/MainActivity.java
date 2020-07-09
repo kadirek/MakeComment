@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,8 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.makecomment.Adapters.ParseAdapter;
 import com.example.makecomment.Models.ParseItem;
 import com.example.makecomment.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -42,7 +48,9 @@ public class MainActivity extends AppCompatActivity {
     private Button profile;
 
 
-
+    FirebaseAuth mAuth;
+    FirebaseUser mUser;
+    FirebaseDatabase mDb;
 
 
     @Override
@@ -54,6 +62,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         login = findViewById(R.id.signInButton);
         profile = findViewById(R.id.profileButton);
+
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+        mDb = FirebaseDatabase.getInstance();
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,6 +146,25 @@ public class MainActivity extends AppCompatActivity {
 
                     Log.d("items","img" + imgUrl + " . title: "+ parseTitle );
                     parseItems.add(new ParseItem(imgUrl, parseTitle));
+
+                    String ChannelName = parseTitle.replaceAll("[^A-Za-z0-9()\\[\\]]", "");//Delete all invalid characters
+
+                    DatabaseReference dRef = mDb.getReference("Channels").child(ChannelName).push();
+                    String imageDB = imgUrl;
+                    String titleDB = parseTitle;
+                    ParseItem pItem = new ParseItem(imageDB, titleDB);
+
+                    dRef.setValue(pItem).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(MainActivity.this, "postlar database de", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(MainActivity.this, "Hata oluştu", Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
                 }
 

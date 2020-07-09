@@ -1,6 +1,7 @@
 package com.example.makecomment.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.makecomment.Activities.TvDetails;
 import com.example.makecomment.Models.ParseItem;
 import com.example.makecomment.R;
 import com.squareup.picasso.Picasso;
@@ -63,6 +65,13 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
         public void onClick(View view) {
             int position = getAdapterPosition();
             Toast.makeText(context, position + ". kanal", Toast.LENGTH_SHORT).show();
+
+            Intent tvDetails = new Intent(context, TvDetails.class);
+            tvDetails.putExtra("titleName",parseItems.get(position).getTitle());
+            tvDetails.putExtra("imageUrl",parseItems.get(position).getImgUrl());
+
+            context.startActivity(tvDetails);
+
         }
     }
 }
