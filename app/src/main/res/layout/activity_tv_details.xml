@@ -17,14 +17,25 @@
 
         <ImageView
             android:id="@+id/imgOfShow"
-            android:layout_width="0dp"
-            android:layout_height="250dp"
+            android:layout_width="110dp"
+            android:layout_height="100dp"
             android:scaleType="centerCrop"
+            android:layout_marginTop="25dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.500"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+        <ImageView
+            android:id="@+id/backOfImage"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_gravity="bottom"
+            android:src="@drawable/gradient"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@drawable/gradient"/>
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
 
@@ -44,7 +55,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imgOfShow"/>
+            app:layout_constraintTop_toBottomOf="@id/backOfImage"/>
 
         <View
             android:id="@+id/view1"
@@ -55,7 +66,7 @@
             android:layout_marginRight="16dp"
             app:layout_constraintRight_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imgOfShow" />
+            app:layout_constraintTop_toBottomOf="@id/backOfImage" />
 
         <TextView
 
@@ -73,7 +84,7 @@
             android:textStyle="bold"
             app:layout_constraintRight_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imgOfShow"
+            app:layout_constraintTop_toBottomOf="@id/backOfImage"
             android:visibility="gone"/>
 
         <View
@@ -105,13 +116,13 @@
 
         <EditText
             android:id="@+id/commentField"
-            android:hint="Write Comment"
+            android:hint="Yorum yap..."
             android:background="@drawable/edittext_button_style_rounded"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:ems="10"
+            android:ems="12"
             android:inputType="textPersonName"
             app:layout_constraintBottom_toBottomOf="@+id/commentUserImg"
             app:layout_constraintStart_toEndOf="@+id/commentUserImg"
@@ -129,14 +140,14 @@
             android:text="Add"
             app:layout_constraintBottom_toBottomOf="@+id/commentField"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.2"
             app:layout_constraintStart_toEndOf="@+id/commentField"
             app:layout_constraintTop_toTopOf="@+id/commentField"
             app:layout_constraintVertical_bias="0.529" />
-        z
+
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_comment"
+            android:id="@+id/commentRV"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

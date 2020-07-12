@@ -20,6 +20,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> {
+    private static final String TAG = "MyActivity";
+
 
     private ArrayList<ParseItem> parseItems;
     private Context context;
@@ -67,6 +69,8 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
             Toast.makeText(context, position + ". kanal", Toast.LENGTH_SHORT).show();
 
             Intent tvDetails = new Intent(context, TvDetails.class);
+
+            tvDetails.putExtra("whichChannel",String.valueOf(getAdapterPosition()));
             tvDetails.putExtra("titleName",parseItems.get(position).getTitle());
             tvDetails.putExtra("imageUrl",parseItems.get(position).getImgUrl());
 

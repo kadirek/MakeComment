@@ -1,6 +1,7 @@
 package com.example.makecomment.Activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -12,7 +13,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.makecomment.Adapters.CommentAdapter;
 import com.example.makecomment.Models.Comment;
 import com.example.makecomment.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -21,11 +25,18 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TvDetails extends AppCompatActivity {
+    private static final String TAG = "MyActivity";
 
     //UI
     private TextView nameOfShow,userName;
@@ -33,11 +44,16 @@ public class TvDetails extends AppCompatActivity {
     private EditText commentField;
     private Button sendComment;
 
-    String channelID;
+    String channelNumber;
 
     FirebaseAuth mAuth;
     FirebaseUser mUser;
     FirebaseDatabase mDb;
+
+    RecyclerView commentRV;
+    CommentAdapter commentAdapter;
+    List<Comment> listOfComment;
+    static String COMMENT_KEY = "CommentKey" ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +71,7 @@ public class TvDetails extends AppCompatActivity {
         imgOfShow = findViewById(R.id.imgOfShow);
         commentField = findViewById(R.id.commentField);
         sendComment = findViewById(R.id.commentSendButton);
+        commentRV = findViewById(R.id.commentRV);
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
@@ -64,12 +81,15 @@ public class TvDetails extends AppCompatActivity {
             commentField.setVisibility(View.GONE);
             sendComment.setVisibility(View.GONE);
         }
+        channelNumber = getIntent().getExtras().getString("whichChannel");
+        Log.d(TAG, "ezhelkadir "+ channelNumber);
 
         sendComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sendComment.setVisibility(View.INVISIBLE);
-                DatabaseReference dRef = mDb.getReference("Comment").child(channelID).push();
+
+                DatabaseReference dRef = mDb.getReference("Channels").child("Comment").child(channelNumber).push();
                 String contentOfComment = commentField.getText().toString();
                 String uid = mUser.getUid();
                 String uImg = mUser.getPhotoUrl().toString();
@@ -100,15 +120,49 @@ public class TvDetails extends AppCompatActivity {
         String title = getIntent().getExtras().getString("titleName");
 
         Picasso.get().load(imagePicasso).into(imgOfShow);//head photo of tv program
+        nameOfShow.setText(title);
 
         if(signInAccount != null){
             Picasso.get().load(signInAccount.getPhotoUrl()).into(userImg);
-            nameOfShow.setText(title);
             userName.setVisibility(View.VISIBLE);
             userName.setText("@"+signInAccount.getDisplayName());
         }
-        //todo: GET TV PROGRAM ID
-        channelID = getIntent().getExtras().getString("CHANNELID");
+
+        initCommentRV();
 
     }
+
+    private void initCommentRV() {
+
+        commentRV.setLayoutManager(new LinearLayoutManager(this));
+        Log.d(TAG, "ezhel "+ channelNumber);
+
+        DatabaseReference commentRef = mDb.getReference("Channels").child("Comment").child(channelNumber);
+        commentRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listOfComment = new ArrayList<>();
+                for (DataSnapshot snap:dataSnapshot.getChildren()) {
+
+                    Comment comment = snap.getValue(Comment.class);
+                    listOfComment.add(comment) ;
+
+                }
+
+                commentAdapter = new CommentAdapter(getApplicationContext(),listOfComment);
+                commentRV.setAdapter(commentAdapter);
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+
 }

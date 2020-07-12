@@ -4,7 +4,7 @@ import com.google.firebase.database.ServerValue;
 
 public class Comment {
 
-    private String content,uid,uimg,uname,channelId;
+    private String content,uid,uimg,uname;
     private Object timestamp;
 
 
@@ -27,14 +27,7 @@ public class Comment {
         this.uname = uname;
         this.timestamp = timestamp;
     }
-
-    public String getChannelId() {
-        return channelId;
-    }
-
-    public void setChannelId(String channelId) {
-        this.channelId = channelId;
-    }
+    
 
     public String getContent() {
         return content;

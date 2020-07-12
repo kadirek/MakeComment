@@ -18,12 +18,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.makecomment.Adapters.ParseAdapter;
 import com.example.makecomment.Models.ParseItem;
 import com.example.makecomment.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -148,24 +151,51 @@ public class MainActivity extends AppCompatActivity {
                     parseItems.add(new ParseItem(imgUrl, parseTitle));
 
                     String ChannelName = parseTitle.replaceAll("[^A-Za-z0-9()\\[\\]]", "");//Delete all invalid characters
+                    final String ChannelName1 = ChannelName.replaceAll("[^a-zA-Z0-9]", "");
 
-                    DatabaseReference dRef = mDb.getReference("Channels").child(ChannelName).push();
+                    DatabaseReference dRef = mDb.getReference("Channels").child(ChannelName1).push();
                     String imageDB = imgUrl;
                     String titleDB = parseTitle;
-                    ParseItem pItem = new ParseItem(imageDB, titleDB);
+                    final ParseItem pItem = new ParseItem(imageDB, titleDB);
+                    final String number = String.valueOf(i);
 
-                    dRef.setValue(pItem).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    // Sign in success, update UI with the signed-in user's information
+                    //setData();
+                    //String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                    final DatabaseReference uidRef = rootRef.child("Channels");
+                    ValueEventListener eventListener = new ValueEventListener() {
                         @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(MainActivity.this, "postlar database de", Toast.LENGTH_SHORT).show();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(MainActivity.this, "Hata oluştu", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if(!dataSnapshot.exists()) {
+                                //Log.d(TAG, "selam "+ FirebaseDatabase.getInstance().getReference("Channels").child(ChannelName1));
 
+                                Log.d(TAG, "selam "+ FirebaseDatabase.getInstance().getReference("Channels").child(ChannelName1));
+                                Log.d(TAG, "selam "+ number);
+
+
+                                FirebaseDatabase.getInstance().getReference("Channels")
+                                        .child(number)
+                                        .setValue(pItem).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+
+                                        if(task.isSuccessful()){
+                                            Toast.makeText(MainActivity.this, "database e başarıyla eklendi", Toast.LENGTH_SHORT).show();
+                                        }else{
+                                            Toast.makeText(MainActivity.this, "eklenemedi", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                            }
+                            else{
+                                Toast.makeText(MainActivity.this, "Zaten database de varmış", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {}
+                    };
+                    uidRef.addListenerForSingleValueEvent(eventListener);
                 }
 
             } catch (IOException e) {
@@ -173,6 +203,8 @@ public class MainActivity extends AppCompatActivity {
             }
             return null;
         }
+
+
     }
 
 
