@@ -73,7 +73,8 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
             tvDetails.putExtra("whichChannel",String.valueOf(getAdapterPosition()));
             tvDetails.putExtra("titleName",parseItems.get(position).getTitle());
             tvDetails.putExtra("imageUrl",parseItems.get(position).getImgUrl());
-
+            tvDetails.putExtra("durationMinute",parseItems.get(position).getDurationMinute());
+            tvDetails.putExtra("starttime", parseItems.get(position).getStartTime());
             context.startActivity(tvDetails);
 
         }

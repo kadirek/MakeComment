@@ -32,7 +32,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class TvDetails extends AppCompatActivity {
@@ -89,7 +93,7 @@ public class TvDetails extends AppCompatActivity {
             public void onClick(View view) {
                 sendComment.setVisibility(View.INVISIBLE);
 
-                DatabaseReference dRef = mDb.getReference("Channels").child("Comment").child(channelNumber).push();
+                DatabaseReference dRef = mDb.getReference("Channels").child(channelNumber).child("Comment").push();
                 String contentOfComment = commentField.getText().toString();
                 String uid = mUser.getUid();
                 String uImg = mUser.getPhotoUrl().toString();
@@ -118,6 +122,10 @@ public class TvDetails extends AppCompatActivity {
         //GET DATA from ParseAdapter class
         String imagePicasso = getIntent().getExtras().getString("imageUrl");
         String title = getIntent().getExtras().getString("titleName");
+        String time = getIntent().getExtras().getString("starttime");
+        String duration = getIntent().getExtras().getString("durationMinute");
+        Log.d(TAG, "gadirel "+time);
+        Log.d(TAG, "gadire"+duration);
 
         Picasso.get().load(imagePicasso).into(imgOfShow);//head photo of tv program
         nameOfShow.setText(title);
@@ -128,8 +136,52 @@ public class TvDetails extends AppCompatActivity {
             userName.setText("@"+signInAccount.getDisplayName());
         }
 
-        initCommentRV();
 
+
+/*        long cutoff = new Date().getTime() - TimeUnit.MILLISECONDS.convert(30, TimeUnit.DAYS);
+        Query oldItems = mDb.orderByChild("timestamp").endAt(cutoff);
+        oldItems.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                for (DataSnapshot itemSnapshot: snapshot.getChildren()) {
+                    itemSnapshot.getRef().removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                throw databaseError.toException();
+            }
+        });*/
+
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+        Date d = null;
+        try {
+            d = df.parse(time);
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(d);
+        cal.add(Calendar.MINUTE, Integer.valueOf(duration));
+        String newTime = df.format(cal.getTime());
+
+        Log.d(TAG, "suresiNeBitissssssssssssss "+ newTime);
+
+        Calendar c = Calendar.getInstance();
+        Date date=c.getTime();
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        String getCurrentTime=dateFormat.format(date);
+        Log.d(TAG, "suresiNeBitissssssssssssss: "+ getCurrentTime);
+
+        if (getCurrentTime.compareTo(newTime) > 0)
+        {
+            Toast.makeText(TvDetails.this, "BAZI YORUMLAR SİLİNDİ", Toast.LENGTH_SHORT).show();//SÜRESİ GEÇİMİŞ
+            FirebaseDatabase.getInstance().getReference("Channels").child(channelNumber).child("Comment").removeValue();
+        }
+
+
+        initCommentRV();
     }
 
     private void initCommentRV() {
@@ -137,7 +189,7 @@ public class TvDetails extends AppCompatActivity {
         commentRV.setLayoutManager(new LinearLayoutManager(this));
         Log.d(TAG, "ezhel "+ channelNumber);
 
-        DatabaseReference commentRef = mDb.getReference("Channels").child("Comment").child(channelNumber);
+        DatabaseReference commentRef = mDb.getReference("Channels").child(channelNumber).child("Comment");
         commentRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

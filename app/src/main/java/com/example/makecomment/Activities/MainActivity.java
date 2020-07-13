@@ -33,8 +33,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MyActivity";
@@ -144,11 +147,31 @@ public class MainActivity extends AppCompatActivity {
                             .eq(i)
                             .text();
 
+                    String time = dataText.select("li.liakissuanda")//todo:title
+                            .select("span")
+                            .eq(i)
+                            .text();
+
+                    String duration = dataText.select("li.liakissuanda")
+                            .select("strong")
+                            .eq(i)
+                            .text();
+
+                    duration = duration.replaceAll("\\D+","");//todo: get only digits
+
+                    Log.d(TAG, "suresiNeZamanBasladi "+ time);
+                    Log.d(TAG, "suresiNeKadarDakika "+ duration);
+
+
+
+                    String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+                    Log.d(TAG, "suresiSimdi "+ currentTime);
+
                     String[] arr = title.split("\\d+", 2);//parse for the name of show not time or duration
-                    String parseTitle = arr[0].trim();
+                    final String parseTitle = arr[0].trim();
 
                     Log.d("items","img" + imgUrl + " . title: "+ parseTitle );
-                    parseItems.add(new ParseItem(imgUrl, parseTitle));
+                    parseItems.add(new ParseItem(imgUrl, parseTitle,duration,time));
 
                     String ChannelName = parseTitle.replaceAll("[^A-Za-z0-9()\\[\\]]", "");//Delete all invalid characters
                     final String ChannelName1 = ChannelName.replaceAll("[^a-zA-Z0-9]", "");
@@ -156,23 +179,16 @@ public class MainActivity extends AppCompatActivity {
                     DatabaseReference dRef = mDb.getReference("Channels").child(ChannelName1).push();
                     String imageDB = imgUrl;
                     String titleDB = parseTitle;
-                    final ParseItem pItem = new ParseItem(imageDB, titleDB);
+                    final ParseItem pItem = new ParseItem(imageDB, titleDB,duration,time);
                     final String number = String.valueOf(i);
 
-                    // Sign in success, update UI with the signed-in user's information
-                    //setData();
-                    //String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
                     DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
                     final DatabaseReference uidRef = rootRef.child("Channels");
                     ValueEventListener eventListener = new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if(!dataSnapshot.exists()) {
-                                //Log.d(TAG, "selam "+ FirebaseDatabase.getInstance().getReference("Channels").child(ChannelName1));
-
-                                Log.d(TAG, "selam "+ FirebaseDatabase.getInstance().getReference("Channels").child(ChannelName1));
-                                Log.d(TAG, "selam "+ number);
-
 
                                 FirebaseDatabase.getInstance().getReference("Channels")
                                         .child(number)
