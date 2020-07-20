@@ -41,9 +41,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
 
         Picasso.get().load(mData.get(position).getUimg()).into(holder.img_user);
-        holder.tv_name.setText(mData.get(position).getUname());
+        holder.user_name.setText(mData.get(position).getUname());
         holder.tv_content.setText(mData.get(position).getContent());
         holder.tv_date.setText(timestampToString((Long)mData.get(position).getTimestamp()));
+        //holder.show_name.setText(mData.get(position).getShowName());
 
     }
 
@@ -55,14 +56,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     public class CommentViewHolder extends RecyclerView.ViewHolder{
 
         ImageView img_user;
-        TextView tv_name,tv_content,tv_date;
+        TextView user_name,tv_content,tv_date,show_name;
 
         public CommentViewHolder(View itemView) {
             super(itemView);
             img_user = itemView.findViewById(R.id.commentUserImgShare);
-            tv_name = itemView.findViewById(R.id.commentUsernameShare);
+            user_name = itemView.findViewById(R.id.commentUsernameShare);
             tv_content = itemView.findViewById(R.id.commentContentShare);
             tv_date = itemView.findViewById(R.id.commentDateShare);
+            show_name = itemView.findViewById(R.id.textView);
         }
     }
 

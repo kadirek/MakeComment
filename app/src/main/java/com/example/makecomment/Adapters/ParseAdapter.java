@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -66,8 +65,6 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-            Toast.makeText(context, position + ". kanal", Toast.LENGTH_SHORT).show();
-
             Intent tvDetails = new Intent(context, TvDetails.class);
 
             tvDetails.putExtra("whichChannel",String.valueOf(getAdapterPosition()));

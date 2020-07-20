@@ -1,5 +1,6 @@
 package com.example.makecomment.Activities;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,7 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -86,20 +87,25 @@ public class TvDetails extends AppCompatActivity {
             sendComment.setVisibility(View.GONE);
         }
         channelNumber = getIntent().getExtras().getString("whichChannel");
-        Log.d(TAG, "ezhelkadir "+ channelNumber);
+        //GET DATA from ParseAdapter class
+        String imagePicasso = getIntent().getExtras().getString("imageUrl");//show's image
+        final String title = getIntent().getExtras().getString("titleName");//show's title
+        final String time = getIntent().getExtras().getString("starttime");//show's start time
+        String duration = getIntent().getExtras().getString("durationMinute");//show's duration (minute)
 
         sendComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sendComment.setVisibility(View.INVISIBLE);
 
-                DatabaseReference dRef = mDb.getReference("Channels").child(channelNumber).child("Comment").push();
+                DatabaseReference dRef = mDb.getReference("Comment").child(channelNumber).push();
                 String contentOfComment = commentField.getText().toString();
                 String uid = mUser.getUid();
                 String uImg = mUser.getPhotoUrl().toString();
                 String uName = mUser.getDisplayName();
+                String showName = title;
 
-                Comment comment = new Comment(contentOfComment, uid,uImg,uName);
+                Comment comment = new Comment(contentOfComment, uid,uImg,uName,showName);
 
                 dRef.setValue(comment).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -119,13 +125,7 @@ public class TvDetails extends AppCompatActivity {
 
 
         GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
-        //GET DATA from ParseAdapter class
-        String imagePicasso = getIntent().getExtras().getString("imageUrl");
-        String title = getIntent().getExtras().getString("titleName");
-        String time = getIntent().getExtras().getString("starttime");
-        String duration = getIntent().getExtras().getString("durationMinute");
-        Log.d(TAG, "gadirel "+time);
-        Log.d(TAG, "gadire"+duration);
+
 
         Picasso.get().load(imagePicasso).into(imgOfShow);//head photo of tv program
         nameOfShow.setText(title);
@@ -136,25 +136,7 @@ public class TvDetails extends AppCompatActivity {
             userName.setText("@"+signInAccount.getDisplayName());
         }
 
-
-
-/*        long cutoff = new Date().getTime() - TimeUnit.MILLISECONDS.convert(30, TimeUnit.DAYS);
-        Query oldItems = mDb.orderByChild("timestamp").endAt(cutoff);
-        oldItems.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                for (DataSnapshot itemSnapshot: snapshot.getChildren()) {
-                    itemSnapshot.getRef().removeValue();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                throw databaseError.toException();
-            }
-        });*/
-
-        SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm");//adding duration to start time and finding the finish hour
         Date d = null;
         try {
             d = df.parse(time);
@@ -164,21 +146,69 @@ public class TvDetails extends AppCompatActivity {
         Calendar cal = Calendar.getInstance();
         cal.setTime(d);
         cal.add(Calendar.MINUTE, Integer.valueOf(duration));
-        String newTime = df.format(cal.getTime());
+        final String newTime = df.format(cal.getTime());
 
-        Log.d(TAG, "suresiNeBitissssssssssssss "+ newTime);
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Comment");
+        rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.hasChild(channelNumber)) {
+                    Toast.makeText(TvDetails.this, "Burda yorum var", Toast.LENGTH_SHORT).show();
+                    try {//Check if tv show finished or still live
+                        Calendar now = Calendar.getInstance();
+                        String current_hour = now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
+                        String st_hour = time;
+                        String en_hour = newTime;
+                        @SuppressLint("SimpleDateFormat") final SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+                        Date sth = null;
+                        sth = format.parse(st_hour);
+                        Date enh = format.parse(en_hour);
+                        Date nowh = format.parse(current_hour );
+                        if (nowh != null) {
+                            if (nowh.before(enh) && nowh.after(sth) && sth.before(enh)
+                                    || enh.before(sth) && !(nowh.before(enh) && nowh.after(sth))) {
+                                Log.d(TAG, "gecti");
+                            } else {
+                                Toast.makeText(TvDetails.this, "Yeni Program Başladı", Toast.LENGTH_SHORT).show();//saati geçti ve yorumlar silindi
+                                FirebaseDatabase.getInstance().getReference("Comment").child(channelNumber).removeValue();
+                            }
+                        }
+                    } catch (ParseException ignored) {
+                    }
 
-        Calendar c = Calendar.getInstance();
-        Date date=c.getTime();
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
-        String getCurrentTime=dateFormat.format(date);
-        Log.d(TAG, "suresiNeBitissssssssssssss: "+ getCurrentTime);
 
-        if (getCurrentTime.compareTo(newTime) > 0)
-        {
-            Toast.makeText(TvDetails.this, "BAZI YORUMLAR SİLİNDİ", Toast.LENGTH_SHORT).show();//SÜRESİ GEÇİMİŞ
-            FirebaseDatabase.getInstance().getReference("Channels").child(channelNumber).child("Comment").removeValue();
-        }
+
+                    FirebaseDatabase.getInstance().getReference().child("Comment").child(channelNumber).orderByChild("showName").equalTo(title)
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if(dataSnapshot.exists()){
+                                        Toast.makeText(TvDetails.this, "selam", Toast.LENGTH_SHORT).show();//yorum var ancak program hala bitmedi
+                                        Log.d(TAG, "kackadir "+ dataSnapshot.getRef());
+                                        //bus number exists in Database
+                                    } else {
+                                        Toast.makeText(TvDetails.this, "Yeni Program Başladı", Toast.LENGTH_SHORT).show();
+                                        FirebaseDatabase.getInstance().getReference("Comment").child(channelNumber).removeValue();//Programa özel yapılan yorumlar silindi
+
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
 
         initCommentRV();
@@ -187,9 +217,8 @@ public class TvDetails extends AppCompatActivity {
     private void initCommentRV() {
 
         commentRV.setLayoutManager(new LinearLayoutManager(this));
-        Log.d(TAG, "ezhel "+ channelNumber);
 
-        DatabaseReference commentRef = mDb.getReference("Channels").child(channelNumber).child("Comment");
+        DatabaseReference commentRef = mDb.getReference("Comment").child(channelNumber);
         commentRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
