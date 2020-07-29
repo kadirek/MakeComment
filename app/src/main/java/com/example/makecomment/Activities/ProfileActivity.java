@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,11 +18,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    TextView name, mail;
-    Button logout;
+    private TextView name, mail;
+    private Button logout;
+    private ImageView profilePic;
 
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
@@ -32,9 +35,10 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        profilePic = findViewById(R.id.profilePhoto);
         logout = findViewById(R.id.logout);
-        name = findViewById(R.id.name);
-        mail = findViewById(R.id.mail);
+        name = findViewById(R.id.nameText);
+        mail = findViewById(R.id.emailText);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -47,6 +51,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
         if(signInAccount != null){
+            Picasso.get().load(signInAccount.getPhotoUrl()).into(profilePic);
             name.setText(signInAccount.getDisplayName());
             mail.setText(signInAccount.getEmail());
         }

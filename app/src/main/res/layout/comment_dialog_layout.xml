@@ -2,7 +2,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f0a5a5">
+    android:background="@drawable/gradient_tv_details">
     <EditText
         android:id="@+id/dialog_comment_et"
         android:layout_width="match_parent"

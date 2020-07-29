@@ -14,10 +14,11 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:weightSum="24"
-        android:padding="5dp"
+        android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/gradient">
 
         <View
             android:layout_width="20dp"
@@ -26,9 +27,9 @@
 
         <ImageView
             android:id="@+id/logo"
-            android:layout_width="130dp"
-            android:layout_height="50dp"
-            android:background="@drawable/logo"
+            android:layout_width="160dp"
+            android:layout_height="40dp"
+            android:background="@drawable/logo_png"
             android:layout_marginLeft="0dp"
             />
         <View

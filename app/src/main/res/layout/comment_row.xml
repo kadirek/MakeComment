@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_corners"
-    android:paddingTop="8dp">
+    android:layout_marginTop="5dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/commentUserImgShare"
@@ -18,7 +18,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:civ_border_width="2dp"
-        app:civ_border_color="#FFFFFF"/>
+        app:civ_border_color="#FFFFFF"
+        />
 
     <TextView
         android:textColor="#393737"

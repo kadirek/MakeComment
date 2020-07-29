@@ -143,7 +143,7 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
 
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(titleForTry);
-        collapsingToolbar.setCollapsedTitleTypeface(ResourcesCompat.getFont(this,R.font.baloo));
+        collapsingToolbar.setCollapsedTitleTypeface(ResourcesCompat.getFont(this,R.font.baloo));//todo:font
 
         commentField.setOnClickListener(this);
 

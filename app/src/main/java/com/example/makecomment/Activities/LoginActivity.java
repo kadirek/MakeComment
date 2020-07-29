@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        signInBttn=findViewById(R.id.google_signIn);
+        signInBttn=findViewById(R.id.signInButton);
         mAuth=FirebaseAuth.getInstance();
         signInBttn.setOnClickListener(new View.OnClickListener() {
             @Override
