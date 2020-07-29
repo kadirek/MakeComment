@@ -1,6 +1,7 @@
 package com.example.makecomment.Activities;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -91,6 +92,7 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
         commentField = findViewById(R.id.commentField);
         //sendComment = findViewById(R.id.commentSendButton);
         commentRV = findViewById(R.id.commentRV);
+        linearLayout = findViewById(R.id.bottomLinearLayout);
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
@@ -98,7 +100,7 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
 
         if(mUser==null){
             //userImg.setVisibility(View.GONE);
-            commentField.setVisibility(View.GONE);
+            linearLayout.setVisibility(View.GONE);
             //sendComment.setVisibility(View.GONE);
         }
         channelNumber = getIntent().getExtras().getString("whichChannel");
@@ -233,7 +235,10 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
 
         initCommentRV();
     }
-
+    public void goYourProfile(View view) {
+        Intent intent=new Intent(getApplicationContext(),ProfileActivity.class);
+        startActivity(intent);
+    }
 
     private void initCommentRV() {
 
@@ -354,4 +359,6 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
         });
         dialog.show();
     }
+
+
 }

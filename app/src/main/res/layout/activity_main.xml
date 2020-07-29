@@ -5,36 +5,61 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activities.MainActivity">
+    tools:context=".Activities.MainActivity"
+    >
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="20dp"
         android:gravity="center"
         android:weightSum="24"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        android:padding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <View
+            android:layout_width="20dp"
+            android:layout_height="0dp"
+            />
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="130dp"
+            android:layout_height="50dp"
+            android:background="@drawable/logo"
+            android:layout_marginLeft="0dp"
+            />
+        <View
+            android:layout_width="115dp"
+            android:layout_height="0dp"
+            />
+
         <Button
             android:id="@+id/signInButton"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
             android:text="Giriş Yap"
+            android:fontFamily="@font/baloo"
+            android:textColor="#262626"
+            android:background="@drawable/pressed_button"
             android:visibility="gone"
-
             />
+
         <Button
             android:id="@+id/profileButton"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
             android:text="Profil"
-            android:textColor="@color/cardview_light_background"
-            android:background="@color/colorAccent"
+            android:fontFamily="@font/baloo"
+            android:textColor="#262626"
+            android:background="@drawable/pressed_button"
+            android:gravity="center"
+            />
+        <View
+            android:layout_width="20dp"
+            android:layout_height="0dp"
             />
     </LinearLayout>
 
