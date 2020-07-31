@@ -318,7 +318,7 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
                     dRef.setValue(comment).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Toast.makeText(TvDetails.this, "Yorum eklendi", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(TvDetails.this, "Yorum eklendi", Toast.LENGTH_SHORT).show();
                             commentField.setText("");
                             //sendComment.setVisibility(View.VISIBLE);
                         }
@@ -329,8 +329,7 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
                         }
                     });
 
-
-                    Toast.makeText(TvDetails.this,"Yorum başarılı\n",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(TvDetails.this,"Yorum başarılı\n",Toast.LENGTH_SHORT).show();
 
                 }else {
                     Toast.makeText(TvDetails.this,"Yorum içeriği boş olamaz\n",Toast.LENGTH_SHORT).show();

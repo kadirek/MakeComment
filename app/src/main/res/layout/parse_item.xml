@@ -32,7 +32,7 @@
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Title"
             android:textStyle="bold"
@@ -40,6 +40,19 @@
             android:layout_gravity="bottom"
             android:layout_margin="4dp"
             android:paddingLeft="5dp"
+            android:textColor="@color/gray"
+            android:maxLines="1"
+            android:fontFamily="@font/baloo"
+            android:textSize="15dp"/>
+        <TextView
+            android:id="@+id/commentCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textStyle="bold"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="4dp"
             android:textColor="@color/gray"
             android:maxLines="1"
             android:fontFamily="@font/baloo"

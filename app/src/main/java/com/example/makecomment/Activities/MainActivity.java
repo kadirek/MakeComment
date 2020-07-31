@@ -9,6 +9,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,8 +20,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.makecomment.Adapters.ParseAdapter;
 import com.example.makecomment.Models.ParseItem;
 import com.example.makecomment.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -44,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ParseAdapter adapter;
     private ArrayList<ParseItem> parseItems = new ArrayList<>();
+    private ArrayList<String> parseItemsForComment = new ArrayList<String>();
     private ProgressBar progressBar;
     Calendar rightNow = Calendar.getInstance();
 
@@ -52,12 +52,13 @@ public class MainActivity extends AppCompatActivity {
     private Button login;
     private Button profile;
     private SwipeRefreshLayout swipeRefreshLayout;
-
+    private TextView commentCountTextView;
+    private String number;
 
     FirebaseAuth mAuth;
     FirebaseUser mUser;
     FirebaseDatabase mDb;
-
+    DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         login = findViewById(R.id.signInButton);
         profile = findViewById(R.id.profileButton);
         swipeRefreshLayout = findViewById(R.id.swipeLayout);
+        commentCountTextView = findViewById(R.id.commentCount);
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
@@ -172,49 +174,46 @@ public class MainActivity extends AppCompatActivity {
                             .select("strong")
                             .eq(i)
                             .text();
-
                     duration = duration.replaceAll("\\D+","");//todo: get only digits
 
                     String[] arr = title.split("\\d+", 2);//parse for the name of show not time or duration
                     final String parseTitle = arr[0].trim();
+                    final int n = i;
 
-                    Log.d("items","img" + imgUrl + " . title: "+ parseTitle );
-                    parseItems.add(new ParseItem(imgUrl, parseTitle,duration,time));
-
-                    String imageDB = imgUrl;
-                    String titleDB = parseTitle;
-                    final ParseItem pItem = new ParseItem(imageDB, titleDB,duration,time);
-                    final String number = String.valueOf(i);
-
-                    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-                    final DatabaseReference uidRef = rootRef.child("Channels");
-                    ValueEventListener eventListener = new ValueEventListener() {
+                    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Comment");
+                    rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if(!dataSnapshot.exists()) {
+                        public void onDataChange(DataSnapshot snapshot) {
+                            number = String.valueOf(snapshot.child(String.valueOf(n)).getChildrenCount());
+                    /*        databaseReference = mDb.getReference("Kadir").child(String.valueOf(n)).push();
 
-                                FirebaseDatabase.getInstance().getReference("Channels")
-                                        .child(number)
-                                        .setValue(pItem).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-
-                                        if(task.isSuccessful()){
-                                            //Toast.makeText(MainActivity.this, "database e başarıyla eklendi", Toast.LENGTH_SHORT).show();
-                                        }else{
-                                            //Toast.makeText(MainActivity.this, "eklenemedi", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
-                            }
-                            else{
-                                //Toast.makeText(MainActivity.this, "Zaten database de varmış", Toast.LENGTH_SHORT).show();
-                            }
+                            databaseReference.setValue(number).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(MainActivity.this, "Sayı eklendi", Toast.LENGTH_SHORT).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(MainActivity.this, "Hata var", Toast.LENGTH_SHORT).show();
+                                }
+                            });*/
+                            parseItemsForComment.add(n,number);
                         }
+
                         @Override
-                        public void onCancelled(DatabaseError databaseError) {}
-                    };
-                    uidRef.addListenerForSingleValueEvent(eventListener);
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+                    if(parseItemsForComment!= null && parseItemsForComment.size() !=0) {
+                        Log.d(TAG, n+" gadir "+parseItemsForComment.get(n));
+                        number = parseItemsForComment.get(n);
+                    }
+
+                    parseItems.add(new ParseItem(imgUrl, parseTitle,duration,number,time));
+
                 }
 
             } catch (IOException e) {
