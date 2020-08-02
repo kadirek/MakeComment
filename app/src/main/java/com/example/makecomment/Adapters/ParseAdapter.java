@@ -42,7 +42,7 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ParseAdapter.ViewHolder holder, int position) {
         ParseItem parseItem = parseItems.get(position);
         holder.textView.setText(parseItem.getTitle());
-        holder.commentCount.setText(parseItem.getCommentCount());
+        holder.commentCount.setText(String.valueOf(parseItem.getCommentCount()));
         Picasso.get().load(parseItem.getImgUrl()).into(holder.imageView);
     }
 

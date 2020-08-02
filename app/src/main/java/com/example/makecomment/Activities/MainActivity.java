@@ -3,7 +3,6 @@ package com.example.makecomment.Activities;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -43,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ParseAdapter adapter;
     private ArrayList<ParseItem> parseItems = new ArrayList<>();
-    private ArrayList<String> parseItemsForComment = new ArrayList<String>();
+    private ArrayList<Integer> parseItemsForComment = new ArrayList<Integer>();
     private ProgressBar progressBar;
     Calendar rightNow = Calendar.getInstance();
 
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private Button profile;
     private SwipeRefreshLayout swipeRefreshLayout;
     private TextView commentCountTextView;
-    private String number;
+    private int number;
 
     FirebaseAuth mAuth;
     FirebaseUser mUser;
@@ -122,6 +121,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class Content extends AsyncTask<Void,Void,Void>{
+
+        private int number1;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -184,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
                     rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
-                            number = String.valueOf(snapshot.child(String.valueOf(n)).getChildrenCount());
+                            number1 = (int)snapshot.child(String.valueOf(n)).getChildrenCount();
                     /*        databaseReference = mDb.getReference("Kadir").child(String.valueOf(n)).push();
 
                             databaseReference.setValue(number).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -198,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
                                     Toast.makeText(MainActivity.this, "Hata var", Toast.LENGTH_SHORT).show();
                                 }
                             });*/
-                            parseItemsForComment.add(n,number);
+                            parseItemsForComment.add(n,number1);
                         }
 
                         @Override
@@ -208,11 +210,11 @@ public class MainActivity extends AppCompatActivity {
                     });
 
                     if(parseItemsForComment!= null && parseItemsForComment.size() !=0) {
-                        Log.d(TAG, n+" gadir "+parseItemsForComment.get(n));
-                        number = parseItemsForComment.get(n);
+                        //Log.d(TAG, n+" gadir "+parseItemsForComment.get(n));
+                        number1 = parseItemsForComment.get(n);
                     }
 
-                    parseItems.add(new ParseItem(imgUrl, parseTitle,duration,number,time));
+                    parseItems.add(new ParseItem(imgUrl, parseTitle,duration,number1,time));
 
                 }
 

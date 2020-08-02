@@ -8,35 +8,35 @@ public class ParseItem {
     private String durationMinute;
     private String startTime;
     private Object timestamp;
-    private String  commentCount;
+    private int  commentCount;
 
     public ParseItem() {
     }
 
-    public ParseItem(String imgUrl, String title, String durationMinute,String commentCount ,String startTime) {
+    public ParseItem(String imgUrl, String title, String durationMinute,int commentCount ,String startTime) {
         this.imgUrl = imgUrl;
         this.title = title;
         this.durationMinute = durationMinute;
-        this.startTime = startTime;
         this.commentCount = commentCount;
+        this.startTime = startTime;
         this.timestamp = ServerValue.TIMESTAMP;
 
     }
 
-    public ParseItem(String imgUrl, String title, String durationMinute, String startTime,String commentCount, Object timestamp) {
+    public ParseItem(String imgUrl, String title, String durationMinute, int commentCount,String startTime, Object timestamp) {
         this.imgUrl = imgUrl;
         this.title = title;
         this.durationMinute = durationMinute;
-        this.startTime = startTime;
         this.commentCount= commentCount;
+        this.startTime = startTime;
         this.timestamp = timestamp;
     }
 
-    public String getCommentCount() {
+    public int getCommentCount() {
         return commentCount;
     }
 
-    public void setCommentCount(String commentCount) {
+    public void setCommentCount(int commentCount) {
         this.commentCount = commentCount;
     }
 
