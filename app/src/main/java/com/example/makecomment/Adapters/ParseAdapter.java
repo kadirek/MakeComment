@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,9 +42,27 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ParseAdapter.ViewHolder holder, int position) {
         ParseItem parseItem = parseItems.get(position);
-        holder.textView.setText(parseItem.getTitle());
-        holder.commentCount.setText(String.valueOf(parseItem.getCommentCount()));
-        Picasso.get().load(parseItem.getImgUrl()).into(holder.imageView);
+
+        //holder.commentCount.setText(String.valueOf(parseItem.getCommentCount()));
+
+        if (parseItem.getTitle().isEmpty()) {
+            holder.textView.setText("?");
+        } else{
+            holder.textView.setText(parseItem.getTitle());
+        }
+
+        if (parseItem.getCommentCount() == 0) {
+            holder.commentCount.setText("0");
+        } else{
+            holder.commentCount.setText(String.valueOf(parseItem.getCommentCount()));
+        }
+
+        if (parseItem.getImgUrl().isEmpty()) {
+            holder.imageView.setImageResource(R.drawable.icon);
+        } else{
+            Picasso.get().load(parseItem.getImgUrl()).into(holder.imageView);
+        }
+        //Picasso.get().load(parseItem.getImgUrl()).into(holder.imageView);
     }
 
     @Override
@@ -69,7 +88,7 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
         public void onClick(View view) {
             int position = getAdapterPosition();
             Intent tvDetails = new Intent(context, TvDetails.class);
-
+            Toast.makeText(context, position+".kanal", Toast.LENGTH_SHORT).show();
             tvDetails.putExtra("whichChannel",String.valueOf(getAdapterPosition()));
             tvDetails.putExtra("titleName",parseItems.get(position).getTitle());
             tvDetails.putExtra("imageUrl",parseItems.get(position).getImgUrl());

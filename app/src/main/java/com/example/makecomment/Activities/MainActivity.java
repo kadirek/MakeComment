@@ -3,6 +3,7 @@ package com.example.makecomment.Activities;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -33,7 +34,6 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MyActivity";
@@ -42,22 +42,21 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ParseAdapter adapter;
     private ArrayList<ParseItem> parseItems = new ArrayList<>();
-    private ArrayList<Integer> parseItemsForComment = new ArrayList<Integer>();
-    private ProgressBar progressBar;
-    Calendar rightNow = Calendar.getInstance();
+    public static int commentCount;
 
     //UI
     private ImageView logo;
     private Button login;
     private Button profile;
+    private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private TextView commentCountTextView;
-    private int number;
 
+    //Firebase
     FirebaseAuth mAuth;
     FirebaseUser mUser;
     FirebaseDatabase mDb;
-    DatabaseReference databaseReference;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,13 +78,13 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
             }
         });
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if(user==null){
+        if (user == null) {
             profile.setVisibility(View.GONE);
             login.setVisibility(View.VISIBLE);
         }
@@ -93,12 +92,10 @@ public class MainActivity extends AppCompatActivity {
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(), ProfileActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(intent);
             }
         });
-
-
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -106,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         loadItems();
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -118,11 +116,11 @@ public class MainActivity extends AppCompatActivity {
     private void loadItems() {
         Content content = new Content();
         content.execute();
+
     }
 
     private class Content extends AsyncTask<Void,Void,Void>{
 
-        private int number1;
 
         @Override
         protected void onPreExecute() {
@@ -155,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                 Elements data = doc.select("li.liakiskanal");
                 Elements dataText = doc.select("li.liakissuanda");
 
-                int size = data.size();//get all count of elements
+                int size = data.size();//get all commentCount of elements
                 for(int i =0 ; i<size ; i++){
 
                     String imgUrl = data.select("li.liakiskanal")//todo: image
@@ -180,27 +178,21 @@ public class MainActivity extends AppCompatActivity {
 
                     String[] arr = title.split("\\d+", 2);//parse for the name of show not time or duration
                     final String parseTitle = arr[0].trim();
+                    final String imgUrl1=imgUrl;
+                    final String duration1=duration;
+                    final String time1=time;
                     final int n = i;
 
                     DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Comment");
-                    rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    rootRef.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
-                            number1 = (int)snapshot.child(String.valueOf(n)).getChildrenCount();
-                    /*        databaseReference = mDb.getReference("Kadir").child(String.valueOf(n)).push();
 
-                            databaseReference.setValue(number).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Toast.makeText(MainActivity.this, "Sayı eklendi", Toast.LENGTH_SHORT).show();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(MainActivity.this, "Hata var", Toast.LENGTH_SHORT).show();
-                                }
-                            });*/
-                            parseItemsForComment.add(n,number1);
+                            commentCount = (int)snapshot.child(String.valueOf(n)).getChildrenCount();
+                            Log.d(TAG, n+" helin "+commentCount);
+
+                            parseItems.add(new ParseItem(imgUrl1, parseTitle,duration1,commentCount,time1));
+                            adapter.notifyDataSetChanged();/** this line has to be here otherwise recylerview items doesnt populate the table */
                         }
 
                         @Override
@@ -208,13 +200,6 @@ public class MainActivity extends AppCompatActivity {
 
                         }
                     });
-
-                    if(parseItemsForComment!= null && parseItemsForComment.size() !=0) {
-                        //Log.d(TAG, n+" gadir "+parseItemsForComment.get(n));
-                        number1 = parseItemsForComment.get(n);
-                    }
-
-                    parseItems.add(new ParseItem(imgUrl, parseTitle,duration,number1,time));
 
                 }
 

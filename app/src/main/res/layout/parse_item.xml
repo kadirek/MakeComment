@@ -46,10 +46,11 @@
             android:textSize="15dp"/>
 
 
+
         <TextView
             android:id="@+id/commentCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:text="0"
             android:textStyle="bold"
             style="@style/TextAppearance.AppCompat.Medium"
@@ -59,8 +60,10 @@
             android:maxLines="1"
             android:fontFamily="@font/baloo"
             android:textSize="15dp"
-            android:gravity="center"
-            android:background="@drawable/comment_bubble"/>
+            android:gravity="top|center"
+            android:background="@drawable/comment_icon"
+            />
+
 
     </androidx.cardview.widget.CardView>
 
