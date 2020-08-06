@@ -2,6 +2,7 @@ package com.example.makecomment.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,9 @@ import java.util.ArrayList;
 
 public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> {
     private static final String TAG = "MyActivity";
-
+    private String tvSekiz = "https://www.canlitv.vin/kanallar/tv-8-hd-izle.png";
+    private String kanalYedi = "https://www.canlitv.vin/kanallar/kanal-7-canli-hd-izle-1.png";
+    private String haberGlobal = "https://www.canlitv.vin/kanallar/haber-global.gif";
 
     private ArrayList<ParseItem> parseItems;
     private Context context;
@@ -57,12 +60,19 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
             holder.commentCount.setText(String.valueOf(parseItem.getCommentCount()));
         }
 
+        Log.d(TAG, position+" gadiek "+ parseItem.getImgUrl());
         if (parseItem.getImgUrl().isEmpty()) {
             holder.imageView.setImageResource(R.drawable.icon);
-        } else{
+        } else if(parseItem.getImgUrl().equals(tvSekiz)){
+            holder.imageView.setImageResource(R.drawable.tvsekiz);
+        } else if(parseItem.getImgUrl().equals(kanalYedi)){
+            holder.imageView.setImageResource(R.drawable.kanalyedi);
+        }else if(parseItem.getImgUrl().equals(haberGlobal)){
+            holder.imageView.setImageResource(R.drawable.haberglobal);
+        }else {
             Picasso.get().load(parseItem.getImgUrl()).into(holder.imageView);
         }
-        //Picasso.get().load(parseItem.getImgUrl()).into(holder.imageView);
+
     }
 
     @Override
@@ -91,9 +101,22 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
             Toast.makeText(context, position+".kanal", Toast.LENGTH_SHORT).show();
             tvDetails.putExtra("whichChannel",String.valueOf(getAdapterPosition()));
             tvDetails.putExtra("titleName",parseItems.get(position).getTitle());
-            tvDetails.putExtra("imageUrl",parseItems.get(position).getImgUrl());
+           // tvDetails.putExtra("imageUrl",parseItems.get(position).getImgUrl());
+            if (parseItems.get(position).getImgUrl().isEmpty()) {
+                tvDetails.putExtra("imageUrl",R.drawable.icon);
+            } else if(parseItems.get(position).getImgUrl().equals(tvSekiz)){
+                tvDetails.putExtra("imageUrl",R.drawable.tvsekiz);
+            } else if(parseItems.get(position).getImgUrl().equals(kanalYedi)){
+                tvDetails.putExtra("imageUrl",R.drawable.kanalyedi);
+            }else if(parseItems.get(position).getImgUrl().equals(haberGlobal)){
+                tvDetails.putExtra("imageUrl",R.drawable.haberglobal);
+            }else {
+                tvDetails.putExtra("imageUrl",parseItems.get(position).getImgUrl());
+            }
             tvDetails.putExtra("durationMinute",parseItems.get(position).getDurationMinute());
             tvDetails.putExtra("starttime", parseItems.get(position).getStartTime());
+
+
             context.startActivity(tvDetails);
 
         }

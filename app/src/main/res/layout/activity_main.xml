@@ -8,33 +8,27 @@
     tools:context=".Activities.MainActivity"
     >
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/linearLayout"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:weightSum="24"
-        android:padding="8dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/gradient">
 
-        <View
-            android:layout_width="20dp"
-            android:layout_height="0dp"
-            />
 
         <ImageView
             android:id="@+id/logo"
             android:layout_width="160dp"
             android:layout_height="40dp"
             android:background="@drawable/logo"
-            android:layout_marginLeft="0dp"
-            />
-        <View
-            android:layout_width="115dp"
-            android:layout_height="0dp"
+            android:layout_gravity="center|start"
             />
 
         <Button
@@ -46,6 +40,7 @@
             android:textColor="#262626"
             android:background="@drawable/pressed_button"
             android:visibility="gone"
+            android:layout_gravity="center|end"
             />
 
         <Button
@@ -57,12 +52,10 @@
             android:textColor="#262626"
             android:background="@drawable/pressed_button"
             android:gravity="center"
+            android:layout_gravity="center|end"
             />
-        <View
-            android:layout_width="20dp"
-            android:layout_height="0dp"
-            />
-    </LinearLayout>
+
+    </FrameLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeLayout"

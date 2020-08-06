@@ -105,41 +105,13 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
         }
         channelNumber = getIntent().getExtras().getString("whichChannel");
         //GET DATA from ParseAdapter class
-        String imagePicasso = getIntent().getExtras().getString("imageUrl");//show's image
+        String imagePicasso = getIntent().getExtras().getString("imageUrl");
+        int imagePicasso2 = getIntent().getIntExtra("imageUrl",0);
+        Log.d(TAG, "simge"+ imagePicasso);//show's image
         final String title = getIntent().getExtras().getString("titleName");//show's title
         titleForTry = title;
         final String time = getIntent().getExtras().getString("starttime");//show's start time
         String duration = getIntent().getExtras().getString("durationMinute");//show's duration (minute)
-
-     /*   sendComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendComment.setVisibility(View.INVISIBLE);
-
-                DatabaseReference dRef = mDb.getReference("Comment").child(channelNumber).push();
-                String contentOfComment = commentField.getText().toString();
-                String uid = mUser.getUid();
-                String uImg = mUser.getPhotoUrl().toString();
-                String uName = mUser.getDisplayName();
-                String showName = title;
-
-                Comment comment = new Comment(contentOfComment, uid,uImg,uName,showName);
-
-                dRef.setValue(comment).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(TvDetails.this, "Yorum eklendi", Toast.LENGTH_SHORT).show();
-                        commentField.setText("");
-                        sendComment.setVisibility(View.VISIBLE);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(TvDetails.this, "Hata oluştu", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });*/
 
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(titleForTry);
@@ -150,8 +122,11 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
 
         GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
 
-
-        Picasso.get().load(imagePicasso).into(imgOfShow);//head photo of tv program
+        if(imagePicasso == null){
+            imgOfShow.setImageResource(imagePicasso2);
+        }else{
+            Picasso.get().load(imagePicasso).into(imgOfShow);//head photo of tv program
+        }
         //nameOfShow.setText(title);
 
         if(signInAccount != null){

@@ -17,7 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:fitsSystemWindows="true">
+            android:fitsSystemWindows="true"
+            android:background="@drawable/gradient">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/collapsing_toolbar"
@@ -39,6 +40,7 @@
                         android:scaleType="centerCrop"
                         android:layout_gravity="center|top"
                         android:src="#88888888"
+                        android:layout_marginTop="5dp"
                         />
 
 
