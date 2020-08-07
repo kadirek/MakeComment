@@ -99,9 +99,7 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
         mDb = FirebaseDatabase.getInstance();
 
         if(mUser==null){
-            //userImg.setVisibility(View.GONE);
             linearLayout.setVisibility(View.GONE);
-            //sendComment.setVisibility(View.GONE);
         }
         channelNumber = getIntent().getExtras().getString("whichChannel");
         //GET DATA from ParseAdapter class
@@ -127,7 +125,6 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
         }else{
             Picasso.get().load(imagePicasso).into(imgOfShow);//head photo of tv program
         }
-        //nameOfShow.setText(title);
 
         if(signInAccount != null){
             Picasso.get().load(signInAccount.getPhotoUrl()).into(userImg);
@@ -216,8 +213,10 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
     }
 
     private void initCommentRV() {
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setReverseLayout(true);
+        commentRV.setLayoutManager(linearLayoutManager);
 
-        commentRV.setLayoutManager(new LinearLayoutManager(this));
 
         DatabaseReference commentRef = mDb.getReference("Comment").child(channelNumber);
         commentRef.addValueEventListener(new ValueEventListener() {
@@ -276,8 +275,6 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
 
                     //commentOnWork(commentContent);
                     dialog.dismiss();
-                   /* CommentDetailBean detailBean = new CommentDetailBean("Xiao Ming\n", commentContent,"just");
-                    adapter.addTheCommentData(detailBean);*/
 
                     //sendComment.setVisibility(View.INVISIBLE);
 

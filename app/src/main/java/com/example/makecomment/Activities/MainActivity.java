@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
                     final int n = i;
 
                     DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Comment");
-                    rootRef.addValueEventListener(new ValueEventListener() {
+                    rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
 
