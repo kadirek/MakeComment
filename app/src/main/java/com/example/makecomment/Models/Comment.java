@@ -4,30 +4,40 @@ import com.google.firebase.database.ServerValue;
 
 public class Comment {
 
-    private String content,uid,uimg,uname,showName;
+    private String content,uid,uimg,uname,showName,instaUserName;
     private Object timestamp;
 
 
     public Comment() {
     }
 
-    public Comment(String content, String uid, String uimg, String uname, String showName) {
+    public Comment(String content, String uid, String uimg, String uname, String showName, String instaUserName) {
         this.content = content;
         this.uid = uid;
         this.uimg = uimg;
         this.uname = uname;
         this.showName = showName;
+        this.instaUserName = instaUserName;
         this.timestamp = ServerValue.TIMESTAMP;
 
     }
 
-    public Comment(String content, String uid, String uimg, String uname, String showName, Object timestamp) {
+    public Comment(String content, String uid, String uimg, String uname, String showName, String instaUserName, Object timestamp) {
         this.content = content;
         this.uid = uid;
         this.uimg = uimg;
         this.uname = uname;
         this.showName = showName;
+        this.instaUserName= instaUserName;
         this.timestamp = timestamp;
+    }
+
+    public String getInstaUserName() {
+        return instaUserName;
+    }
+
+    public void setInstaUserName(String instaUserName) {
+        this.instaUserName = instaUserName;
     }
 
     public String getShowName() {

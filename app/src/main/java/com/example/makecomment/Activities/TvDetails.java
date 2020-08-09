@@ -73,6 +73,7 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
 
     private BottomSheetDialog dialog;
     static String titleForTry ;
+    static String instaUserName;
     private Toolbar toolbar;
 
 
@@ -101,6 +102,7 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
         if(mUser==null){
             linearLayout.setVisibility(View.GONE);
         }
+
         channelNumber = getIntent().getExtras().getString("whichChannel");
         //GET DATA from ParseAdapter class
         String imagePicasso = getIntent().getExtras().getString("imageUrl");
@@ -128,6 +130,7 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
 
         if(signInAccount != null){
             Picasso.get().load(signInAccount.getPhotoUrl()).into(userImg);
+            getInstaUserName();
         }
 
         SimpleDateFormat df = new SimpleDateFormat("HH:mm");//adding duration to start time and finding the finish hour
@@ -226,7 +229,7 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
 
                 }
 
-                commentAdapter = new CommentAdapter(getApplicationContext(),listOfComment);
+                commentAdapter = new CommentAdapter(TvDetails.this,listOfComment);//TvDetails.this has to wrote not getApplicationContext();
                 commentRV.setAdapter(commentAdapter);
 
 
@@ -280,8 +283,10 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
                     String uImg = mUser.getPhotoUrl().toString();
                     String uName = mUser.getDisplayName();
                     String showName = titleForTry;
+                    String instagramUserName = instaUserName;
 
-                    Comment comment = new Comment(contentOfComment, uid,uImg,uName,showName);
+
+                    Comment comment = new Comment(contentOfComment, uid,uImg,uName,showName,instaUserName);
 
                     dRef.setValue(comment).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -325,6 +330,20 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
             }
         });
         dialog.show();
+    }
+
+    private void getInstaUserName(){
+        final String userKey = mUser.getUid();
+        mDb.getReference().child("Users").child(userKey).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String userInstagram = String.valueOf(dataSnapshot.child("Personal Informations").child("instaUserName").getValue());
+                instaUserName = userInstagram;
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
 

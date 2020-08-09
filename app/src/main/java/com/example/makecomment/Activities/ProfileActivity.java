@@ -1,6 +1,8 @@
 package com.example.makecomment.Activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.makecomment.Models.OpenDialogForInsta;
 import com.example.makecomment.R;
@@ -35,12 +38,17 @@ public class ProfileActivity extends AppCompatActivity implements OpenDialogForI
     private ImageView profilePic;
     private Button instagram;
     private Button instagramEditButton;
+    private ConstraintLayout constraintLayout;
 
 
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDb;
     private FirebaseUser currentUser;
     private GoogleSignInClient mGoogleSignInClient;
+
+    private String commentUserName;
+    private String commentUserImage;
+    private String commentInstaUserName;
 
 
     @Override
@@ -55,10 +63,21 @@ public class ProfileActivity extends AppCompatActivity implements OpenDialogForI
         instagram = findViewById(R.id.instagramButton);
         instagramTextView = findViewById(R.id.instagramText);
         instagramEditButton = findViewById(R.id.editInstagramButton);
+        constraintLayout = findViewById(R.id.emailConstraintLayout);
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         mDb = FirebaseDatabase.getInstance();
+
+        try {
+            commentUserName = getIntent().getExtras().getString("getUserName");
+            commentUserImage = getIntent().getExtras().getString("getUserImage");
+            commentInstaUserName = getIntent().getExtras().getString("getUserInstaName");
+        }catch (Exception e){
+            Toast.makeText(this, "sanki", Toast.LENGTH_SHORT).show();
+        }
+
+
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -66,12 +85,24 @@ public class ProfileActivity extends AppCompatActivity implements OpenDialogForI
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-
         GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
-        if(signInAccount != null){
+
+        if (!(commentUserName == null || commentUserName.equals("") || commentUserName.equals("null") || commentUserName.isEmpty())){
+            Picasso.get().load(commentUserImage).into(profilePic);
+            nameTextView.setText(commentUserName);
+            instagramTextView.setText(commentInstaUserName);
+            instagramEditButton.setVisibility(View.GONE);
+            logout.setVisibility(View.GONE);
+            constraintLayout.setVisibility(View.GONE);
+            whenInstaUserExist(commentInstaUserName);
+        }else if(signInAccount != null){
             Picasso.get().load(signInAccount.getPhotoUrl()).into(profilePic);
             getDataFromGoogleWithFirebase();
+
         }
+
+
+
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +138,7 @@ public class ProfileActivity extends AppCompatActivity implements OpenDialogForI
 
                 }else{
                     instagramTextView.setText(userInstagram);
-                whenInstaUserExist();
+                whenInstaUserExist(userInstagram);
                 }
 
 
@@ -118,19 +149,19 @@ public class ProfileActivity extends AppCompatActivity implements OpenDialogForI
         });
     }
 
-    private void whenInstaUserExist(){
+    private void whenInstaUserExist(final String userName){
         instagram.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(ProfileActivity.this, "Instagram", Toast.LENGTH_SHORT).show();
-                           /* Uri uri = Uri.parse("https://www.instagram.com/_u/gadirek");
+                            Uri uri = Uri.parse("https://www.instagram.com/_u/"+userName);
                             Intent instagram = new Intent(Intent.ACTION_VIEW,uri);
                             instagram.setPackage("com.instagram.android");
                             try {
                                 startActivity(instagram);
                             }catch (ActivityNotFoundException e){
-                                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.instagram.com/_u/gadirek")));
-                            }*/
+                                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.instagram.com/_u/"+userName)));
+                            }
             }
         });
     }
