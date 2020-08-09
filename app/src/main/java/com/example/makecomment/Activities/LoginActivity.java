@@ -53,8 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleSignInAccount gsa;
     private static final int RC_SIGN_IN = 9001;
     private Boolean isExist;
-    private Random r;
-    public static Integer memberNumber;
+    private Random r;;
     private LinearLayout mainLayout;
 
     @Override
@@ -121,12 +120,7 @@ public class LoginActivity extends AppCompatActivity {
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         final String email1=acct.getEmail();
         final String name1=acct.getDisplayName();
-        readData(new MyCallback() {
-            @Override
-            public void onCallback(int value) {
-                memberNumber=value+41479;
-            }
-        });
+
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -143,12 +137,12 @@ public class LoginActivity extends AppCompatActivity {
                                     if(!dataSnapshot.exists()) {//TODO: Kullanıcı google hesabı ile ilk defa giriş yapıyorsa database verileri ekleniyor ve bir üye numarası veriliyor.
                                         //create new user
                                         String ad=name1;
-                                        Integer kullaniciadi=memberNumber;
+                                        String instaUserName="Eklenmedi";
                                         String email=email1;
 
                                         User2 user1=new User2(
                                                 ad,
-                                                kullaniciadi,
+                                                instaUserName,
                                                 email
                                         );
                                         FirebaseDatabase.getInstance().getReference("Users")
@@ -181,29 +175,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
-    private void readData(final MyCallback myCallback){
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-
-        rootRef.child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // get total available quest
-                int size = (int) dataSnapshot.getChildrenCount();
-                myCallback.onCallback(size);
-
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    public interface MyCallback {
-        void onCallback(int value);
-    }
-
-
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();

@@ -6,10 +6,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.makecomment.Models.OpenDialogForInsta;
 import com.example.makecomment.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -18,15 +20,26 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-public class ProfileActivity extends AppCompatActivity {
-
-    private TextView name, mail;
+public class ProfileActivity extends AppCompatActivity implements OpenDialogForInsta.ExampleDialogListener{
+    private static final String TAG = "MyActivity";
+    private TextView nameTextView, emailTextView, instagramTextView;
     private Button logout;
     private ImageView profilePic;
+    private Button instagram;
+    private Button instagramEditButton;
+
 
     private FirebaseAuth mAuth;
+    private FirebaseDatabase mDb;
+    private FirebaseUser currentUser;
     private GoogleSignInClient mGoogleSignInClient;
 
 
@@ -37,10 +50,15 @@ public class ProfileActivity extends AppCompatActivity {
 
         profilePic = findViewById(R.id.profilePhoto);
         logout = findViewById(R.id.logout);
-        name = findViewById(R.id.nameText);
-        mail = findViewById(R.id.emailText);
+        nameTextView = findViewById(R.id.nameText);
+        emailTextView = findViewById(R.id.emailText);
+        instagram = findViewById(R.id.instagramButton);
+        instagramTextView = findViewById(R.id.instagramText);
+        instagramEditButton = findViewById(R.id.editInstagramButton);
 
         mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        mDb = FirebaseDatabase.getInstance();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -52,8 +70,7 @@ public class ProfileActivity extends AppCompatActivity {
         GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
         if(signInAccount != null){
             Picasso.get().load(signInAccount.getPhotoUrl()).into(profilePic);
-            name.setText(signInAccount.getDisplayName());
-            mail.setText(signInAccount.getEmail());
+            getDataFromGoogleWithFirebase();
         }
 
         logout.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +79,96 @@ public class ProfileActivity extends AppCompatActivity {
                 signOutG();
             }
         });
+
+        instagramEditButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDialogForAddInsta();
+            }
+        });
+
+
+
+    }
+    private void getDataFromGoogleWithFirebase(){
+        final String userKey = currentUser.getUid();
+        mDb.getReference().child("Users").child(userKey).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String userName = String.valueOf(dataSnapshot.child("Personal Informations").child("ad").getValue());
+                String userEmail = String.valueOf(dataSnapshot.child("Personal Informations").child("email").getValue());
+                String userInstagram = String.valueOf(dataSnapshot.child("Personal Informations").child("instaUserName").getValue());
+
+                nameTextView.setText(userName);
+                emailTextView.setText(userEmail);
+                if(userInstagram.equals("Eklenmedi")){
+                    instagramTextView.setText("Eklenmedi! Hemen ekle...");
+                whenInstaUserNotExist();
+
+                }else{
+                    instagramTextView.setText(userInstagram);
+                whenInstaUserExist();
+                }
+
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+    private void whenInstaUserExist(){
+        instagram.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ProfileActivity.this, "Instagram", Toast.LENGTH_SHORT).show();
+                           /* Uri uri = Uri.parse("https://www.instagram.com/_u/gadirek");
+                            Intent instagram = new Intent(Intent.ACTION_VIEW,uri);
+                            instagram.setPackage("com.instagram.android");
+                            try {
+                                startActivity(instagram);
+                            }catch (ActivityNotFoundException e){
+                                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.instagram.com/_u/gadirek")));
+                            }*/
+            }
+        });
+    }
+
+
+    private void whenInstaUserNotExist(){
+        instagram.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDialogForAddInsta();
+            }
+        });
+    }
+
+    public void openDialogForAddInsta()
+    {
+        OpenDialogForInsta openDialogForInsta = new OpenDialogForInsta();
+        openDialogForInsta.show(getSupportFragmentManager(),"example dialog");
+    }
+
+    @Override
+    public void applyTexts(String username) {//update instagram user name on database
+        if(username.length() <= 2){
+            Toast.makeText(this, "En az 3 karakter girilmeli", Toast.LENGTH_SHORT).show();
+        } else {
+            final String userKey1 = currentUser.getUid();
+
+            DatabaseReference updateData = FirebaseDatabase.getInstance()
+                    .getReference("Users")
+                    .child(userKey1)
+                    .child("Personal Informations")
+                    .child("instaUserName");
+
+            updateData.setValue(username);
+            instagramTextView.setText(username);
+        }
+
+
 
     }
 

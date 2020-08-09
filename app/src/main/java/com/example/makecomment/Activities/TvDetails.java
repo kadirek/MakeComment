@@ -170,8 +170,6 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
                     } catch (ParseException ignored) {
                     }
 
-
-
                     FirebaseDatabase.getInstance().getReference().child("Comment").child(channelNumber).orderByChild("showName").equalTo(title)
                             .addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -202,8 +200,6 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
 
             }
         });
-
-
 
         initCommentRV();
     }

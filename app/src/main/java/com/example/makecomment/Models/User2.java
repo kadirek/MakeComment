@@ -2,14 +2,14 @@ package com.example.makecomment.Models;
 
 public class User2{
     public String ad, email;
-    public Integer kullaniciadi;
+    public String instaUserName;
     public User2(String email,String sifre1) {
 
     }
 
-    public User2(String ad, Integer kullaniciadi, String email) {
+    public User2(String ad, String instaUserName, String email) {
         this.ad = ad;
-        this.kullaniciadi = kullaniciadi;
+        this.instaUserName = instaUserName;
         this.email = email;
     }
 }
