@@ -3,6 +3,7 @@ package com.example.makecomment.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,25 +80,43 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
             itemView.setOnClickListener(this);//todo:without this line you cant click items
 
+            img_user.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+
+                    final Intent intent = new Intent(mContext, ProfileActivity.class);
+                    Log.d(TAG, "zeynno "+ mData.get(position).getUid());
+                    intent.putExtra("getUserUid",mData.get(position).getUid());
+                    intent.putExtra("getUserName",mData.get(position).getUname());
+                    intent.putExtra("getUserImage",mData.get(position).getUimg());
+                    intent.putExtra("getUserInstaName",mData.get(position).getInstaUserName());
+                    mContext.startActivity(intent);
+
+                }
+            });
+
+            user_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+
+                    final Intent intent = new Intent(mContext, ProfileActivity.class);
+                    Log.d(TAG, "zeynno "+ mData.get(position).getUid());
+                    intent.putExtra("getUserUid",mData.get(position).getUid());
+                    intent.putExtra("getUserName",mData.get(position).getUname());
+                    intent.putExtra("getUserImage",mData.get(position).getUimg());
+                    intent.putExtra("getUserInstaName",mData.get(position).getInstaUserName());
+                    mContext.startActivity(intent);
+
+                }
+            });
+
         }
 
         @Override
         public void onClick(View view) {
-            int position = getAdapterPosition();
 
-            //Log.d(TAG, "yuaydi "+ mData.get(position).getUid());
-            final Intent intent = new Intent(mContext, ProfileActivity.class);
-            intent.putExtra("getUserName",mData.get(position).getUname());
-            intent.putExtra("getUserImage",mData.get(position).getUimg());
-            intent.putExtra("getUserInstaName",mData.get(position).getInstaUserName());
-
-            img_user.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    mContext.startActivity(intent);
-                }
-            });
         }
     }
 

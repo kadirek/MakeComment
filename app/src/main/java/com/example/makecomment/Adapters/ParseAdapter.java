@@ -115,6 +115,7 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
             imageView = itemView.findViewById(R.id.imageView);
             textView = itemView.findViewById(R.id.textView);
             commentCount = itemView.findViewById(R.id.commentCount);
+
             itemView.setOnClickListener(this);//todo:without this line you cant click items
         }
 

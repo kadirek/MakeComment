@@ -46,9 +46,13 @@ public class ProfileActivity extends AppCompatActivity implements OpenDialogForI
     private FirebaseUser currentUser;
     private GoogleSignInClient mGoogleSignInClient;
 
+    private String commentUserUid;
     private String commentUserName;
     private String commentUserImage;
     private String commentInstaUserName;
+    private String userUidGoggle;
+
+
 
 
     @Override
@@ -69,16 +73,6 @@ public class ProfileActivity extends AppCompatActivity implements OpenDialogForI
         currentUser = mAuth.getCurrentUser();
         mDb = FirebaseDatabase.getInstance();
 
-        try {
-            commentUserName = getIntent().getExtras().getString("getUserName");
-            commentUserImage = getIntent().getExtras().getString("getUserImage");
-            commentInstaUserName = getIntent().getExtras().getString("getUserInstaName");
-        }catch (Exception e){
-            Toast.makeText(this, "sanki", Toast.LENGTH_SHORT).show();
-        }
-
-
-
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -86,8 +80,21 @@ public class ProfileActivity extends AppCompatActivity implements OpenDialogForI
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
+        try {
+            commentUserUid = getIntent().getExtras().getString("getUserUid");
+            commentUserName = getIntent().getExtras().getString("getUserName");
+            commentUserImage = getIntent().getExtras().getString("getUserImage");
+            commentInstaUserName = getIntent().getExtras().getString("getUserInstaName");
+            userUidGoggle = currentUser.getUid();
 
-        if (!(commentUserName == null || commentUserName.equals("") || commentUserName.equals("null") || commentUserName.isEmpty())){
+        }catch (Exception e){
+
+        }
+
+        if (!(commentUserUid == null || commentUserUid.equals("") || commentUserUid.equals("null") || commentUserUid.isEmpty()) && (commentUserUid == userUidGoggle||commentUserUid.equals(userUidGoggle))){
+            Picasso.get().load(signInAccount.getPhotoUrl()).into(profilePic);
+            getDataFromGoogleWithFirebase();
+        } else if (!(commentUserName == null || commentUserName.equals("") || commentUserName.equals("null") || commentUserName.isEmpty())) {
             Picasso.get().load(commentUserImage).into(profilePic);
             nameTextView.setText(commentUserName);
             instagramTextView.setText(commentInstaUserName);
@@ -100,7 +107,6 @@ public class ProfileActivity extends AppCompatActivity implements OpenDialogForI
             getDataFromGoogleWithFirebase();
 
         }
-
 
 
 
@@ -150,10 +156,13 @@ public class ProfileActivity extends AppCompatActivity implements OpenDialogForI
     }
 
     private void whenInstaUserExist(final String userName){
-        instagram.setOnClickListener(new View.OnClickListener() {
+
+
+            instagram.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ProfileActivity.this, "Instagram", Toast.LENGTH_SHORT).show();
+                if (!(userName == "Eklenmedi" || userName.equals("Eklenmedi"))){
+                Toast.makeText(ProfileActivity.this, "Açılıyor", Toast.LENGTH_SHORT).show();
                             Uri uri = Uri.parse("https://www.instagram.com/_u/"+userName);
                             Intent instagram = new Intent(Intent.ACTION_VIEW,uri);
                             instagram.setPackage("com.instagram.android");
@@ -163,7 +172,13 @@ public class ProfileActivity extends AppCompatActivity implements OpenDialogForI
                                 startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.instagram.com/_u/"+userName)));
                             }
             }
+                else{
+                    Toast.makeText(ProfileActivity.this, "Instagram kullanıcı adı bulunamadı", Toast.LENGTH_SHORT).show();
+                }
+            }
         });
+
+
     }
 
 
