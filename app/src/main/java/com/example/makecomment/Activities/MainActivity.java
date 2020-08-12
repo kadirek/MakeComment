@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -48,6 +49,13 @@ public class MainActivity extends AppCompatActivity {
     private ImageView logo;
     private Button login;
     private Button profile;
+    private Button refreshButtonNext;
+    private Button refreshButtonBack;
+    private TextView rightNowTV;
+    private TextView afterNowTV;
+    private ConstraintLayout constraintLayout;
+    private ConstraintLayout constraintLayoutSecond;
+
     private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private TextView commentCountTextView;
@@ -56,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser mUser;
     FirebaseDatabase mDb;
+    public static boolean isRefreshClicked = false;
 
 
     @Override
@@ -68,8 +77,15 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         login = findViewById(R.id.signInButton);
         profile = findViewById(R.id.profileButton);
+        refreshButtonNext = findViewById(R.id.refreshButtonNext);
+        refreshButtonBack = findViewById(R.id.refreshButtonBack);
+        rightNowTV = findViewById(R.id.rightNowtextView);
+        afterNowTV = findViewById(R.id.afterNowtextView);
         swipeRefreshLayout = findViewById(R.id.swipeLayout);
         commentCountTextView = findViewById(R.id.commentCount);
+        constraintLayout = findViewById(R.id.linearLayout);
+        constraintLayoutSecond = findViewById(R.id.linearLayoutSecond);
+
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
@@ -102,14 +118,51 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ParseAdapter(parseItems, this);
         recyclerView.setAdapter(adapter);
 
-        loadItems();
-
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        refreshButtonNext.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRefresh() {
+            public void onClick(View view) {
+                isRefreshClicked = true;
+                refreshButtonBack.setVisibility(View.VISIBLE);
+                refreshButtonNext.setVisibility(View.GONE);
+                afterNowTV.setVisibility(View.VISIBLE);
+                rightNowTV.setVisibility(View.GONE);
+                constraintLayout.setBackgroundResource(R.drawable.gradient_reverse);
+                constraintLayoutSecond.setBackgroundResource(R.drawable.gradient_reverse);
+                swipeRefreshLayout.setBackgroundResource(R.drawable.gradient_reverse);
+                swipeRefreshLayout.setEnabled(false);
+                loadItems();
+
+
+            }
+        });
+        refreshButtonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isRefreshClicked = false;
+                refreshButtonNext.setVisibility(View.VISIBLE);
+                refreshButtonBack.setVisibility(View.GONE);
+                afterNowTV.setVisibility(View.GONE);
+                rightNowTV.setVisibility(View.VISIBLE);
+                constraintLayout.setBackgroundResource(R.drawable.gradient);
+                constraintLayoutSecond.setBackgroundResource(R.drawable.gradient);
+                swipeRefreshLayout.setBackgroundResource(R.drawable.gradient);
+                swipeRefreshLayout.setEnabled(true);
                 loadItems();
             }
         });
+
+
+
+        loadItems();
+
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    loadItems();
+                }
+            });
+
+
 
     }
 
@@ -152,6 +205,9 @@ public class MainActivity extends AppCompatActivity {
                 Document doc = Jsoup.connect(url).get();
                 Elements data = doc.select("li.liakiskanal");
                 Elements dataText = doc.select("li.liakissuanda");
+                Elements dataTextNext = doc.select("li.liakisgelecek").not(".liakisson");
+                Log.d(TAG, "harbiyeter  "+ dataText);
+                Log.d(TAG, "selamke  "+ dataTextNext);
 
                 int size = data.size();//get all commentCount of elements
                 for(int i =0 ; i<size ; i++){
@@ -162,6 +218,10 @@ public class MainActivity extends AppCompatActivity {
                             .attr("src");
 
                     String title = dataText.select("li.liakissuanda")//todo:title
+                            .eq(i)
+                            .text();
+
+                    String titleNext = dataTextNext.select("li.liakisgelecek")//todo:title
                             .eq(i)
                             .text();
 
@@ -178,6 +238,11 @@ public class MainActivity extends AppCompatActivity {
 
                     String[] arr = title.split("\\d+", 2);//parse for the name of show not time or duration
                     final String parseTitle = arr[0].trim();
+
+
+                    String[] arrNext = titleNext.split("\\d+", 2);//parse for the name of show not time or duration
+                    final String parseTitleNext = arrNext[0].trim();
+
                     final String imgUrl1=imgUrl;
                     final String duration1=duration;
                     final String time1=time;
@@ -191,8 +256,16 @@ public class MainActivity extends AppCompatActivity {
                             commentCount = (int)snapshot.child(String.valueOf(n)).getChildrenCount();
                             Log.d(TAG, n+" helin "+commentCount);
 
-                            parseItems.add(new ParseItem(imgUrl1, parseTitle,duration1,commentCount,time1));
-                            adapter.notifyDataSetChanged();/** this line has to be here otherwise recylerview items doesnt populate the table */
+                            if(!isRefreshClicked){
+                                parseItems.add(new ParseItem(imgUrl1, parseTitle,duration1,commentCount,isRefreshClicked,time1));
+                                adapter.notifyDataSetChanged();/** this line has to be here otherwise recylerview items doesnt populate the table */
+
+                            }
+                            else{
+                                parseItems.add(new ParseItem(imgUrl1, parseTitleNext,duration1,commentCount,isRefreshClicked,time1));
+                                adapter.notifyDataSetChanged();/** this line has to be here otherwise recylerview items doesnt populate the table */
+
+                            }
                         }
 
                         @Override

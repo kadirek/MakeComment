@@ -9,27 +9,38 @@ public class ParseItem {
     private String startTime;
     private Object timestamp;
     private int  commentCount;
+    private Boolean isClicked;
 
     public ParseItem() {
     }
 
-    public ParseItem(String imgUrl, String title, String durationMinute,int commentCount ,String startTime) {
+    public ParseItem(String imgUrl, String title, String durationMinute,int commentCount,Boolean isClicked ,String startTime) {
         this.imgUrl = imgUrl;
         this.title = title;
         this.durationMinute = durationMinute;
         this.commentCount = commentCount;
         this.startTime = startTime;
+        this.isClicked = isClicked;
         this.timestamp = ServerValue.TIMESTAMP;
 
     }
 
-    public ParseItem(String imgUrl, String title, String durationMinute, int commentCount,String startTime, Object timestamp) {
+    public ParseItem(String imgUrl, String title, String durationMinute, int commentCount,Boolean isClicked,String startTime, Object timestamp) {
         this.imgUrl = imgUrl;
         this.title = title;
         this.durationMinute = durationMinute;
         this.commentCount= commentCount;
         this.startTime = startTime;
+        this.isClicked = isClicked;
         this.timestamp = timestamp;
+    }
+
+    public Boolean getClicked() {
+        return isClicked;
+    }
+
+    public void setClicked(Boolean clicked) {
+        isClicked = clicked;
     }
 
     public int getCommentCount() {

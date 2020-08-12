@@ -4,23 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraintLayoutMainindeMaini"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayoutMain"
         android:layout_width="match_parent"
         android:layout_height="125dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="8dp"
 
         >
 
         <ImageView
+            android:id="@+id/backgroundImage"
             android:layout_width="match_parent"
             android:layout_height="125dp"
             android:layout_gravity="bottom"
-            android:background="@drawable/stroke"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

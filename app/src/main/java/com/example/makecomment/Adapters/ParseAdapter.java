@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.makecomment.Activities.TvDetails;
@@ -50,6 +51,66 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ParseAdapter.ViewHolder holder, int position) {
         ParseItem parseItem = parseItems.get(position);
+
+        Log.d(TAG, "suankidurumu "+ parseItem.getClicked());
+
+        if(parseItem.getClicked()){
+            holder.imageView.setClickable(true);
+            holder.imageView.setEnabled(true);
+            holder.imageView.setFocusable(true);
+
+            holder.textView.setClickable(true);
+            holder.textView.setEnabled(true);
+            holder.textView.setFocusable(true);
+
+            holder.commentCount.setClickable(true);
+            holder.commentCount.setEnabled(true);
+            holder.commentCount.setFocusable(true);
+
+            holder.constraintLayout.setClickable(true);
+            holder.constraintLayout.setEnabled(true);
+            holder.constraintLayout.setFocusable(true);
+
+            holder.imageViewBackground.setClickable(true);
+            holder.imageViewBackground.setEnabled(true);
+            holder.imageViewBackground.setFocusable(true);
+
+            holder.peopleIcon.setClickable(true);
+            holder.peopleIcon.setEnabled(true);
+            holder.peopleIcon.setFocusable(true);
+
+            holder.yorumTextView.setClickable(true);
+            holder.yorumTextView.setEnabled(true);
+            holder.yorumTextView.setFocusable(true);
+        }else{
+            holder.imageView.setClickable(false);
+            holder.imageView.setEnabled(false);
+            holder.imageView.setFocusable(false);
+
+            holder.textView.setClickable(false);
+            holder.textView.setEnabled(false);
+            holder.textView.setFocusable(false);
+
+            holder.commentCount.setClickable(false);
+            holder.commentCount.setEnabled(false);
+            holder.commentCount.setFocusable(false);
+
+            holder.constraintLayout.setClickable(false);
+            holder.constraintLayout.setEnabled(false);
+            holder.constraintLayout.setFocusable(false);
+
+            holder.imageViewBackground.setClickable(false);
+            holder.imageViewBackground.setEnabled(false);
+            holder.imageViewBackground.setFocusable(false);
+
+            holder.peopleIcon.setClickable(false);
+            holder.peopleIcon.setEnabled(false);
+            holder.peopleIcon.setFocusable(false);
+
+            holder.yorumTextView.setClickable(false);
+            holder.yorumTextView.setEnabled(false);
+            holder.yorumTextView.setFocusable(false);
+        }
 
         if (parseItem.getTitle().isEmpty()) {
             holder.textView.setText("?");
@@ -107,14 +168,26 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         ImageView imageView;
+        ImageView imageViewBackground;
+        ImageView peopleIcon;
+        TextView yorumTextView;
         TextView textView;
         TextView commentCount;
+        ConstraintLayout constraintLayout;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
+
+            imageViewBackground = itemView.findViewById(R.id.backgroundImage);
+            peopleIcon = itemView.findViewById(R.id.peopleIcon);
+            yorumTextView = itemView.findViewById(R.id.commentCountText);
+
             textView = itemView.findViewById(R.id.textView);
             commentCount = itemView.findViewById(R.id.commentCount);
+            constraintLayout = itemView.findViewById(R.id.constraintLayoutMain);
+
 
             itemView.setOnClickListener(this);//todo:without this line you cant click items
         }
