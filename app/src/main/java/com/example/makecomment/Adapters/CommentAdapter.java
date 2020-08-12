@@ -2,7 +2,6 @@ package com.example.makecomment.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.makecomment.Activities.ProfileActivity;
 import com.example.makecomment.Models.Comment;
+import com.example.makecomment.Models.TimeAgo;
 import com.example.makecomment.R;
 import com.squareup.picasso.Picasso;
 
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder>{
     private static final String TAG = "MyActivity";
@@ -43,10 +41,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     @Override
     public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
 
+        String timeAgo = TimeAgo.getTimeAgo((Long)mData.get(position).getTimestamp());
         Picasso.get().load(mData.get(position).getUimg()).into(holder.img_user);
         holder.user_name.setText(mData.get(position).getUname());
         holder.tv_content.setText(mData.get(position).getContent());
-        holder.tv_date.setText(timestampToString((Long)mData.get(position).getTimestamp()));
+        holder.tv_date.setText(timeAgo);
         //holder.show_name.setText(mData.get(position).getShowName());
 
     }
@@ -121,7 +120,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     }
 
 
-
+/*
     private String timestampToString(long time) {
 
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
@@ -130,5 +129,5 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         return date;
 
 
-    }
+    }*/
 }
