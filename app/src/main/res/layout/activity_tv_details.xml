@@ -33,15 +33,21 @@
                 app:collapsedTitleTextAppearance="@style/SmallHeaderTitleStyle"
                 >
 
-                    <ImageView
-                        android:id="@+id/imgOfShow"
-                        android:layout_width="120dp"
-                        android:layout_height="110dp"
-                        android:scaleType="centerCrop"
-                        android:layout_gravity="center|top"
-                        android:src="#88888888"
-                        android:layout_marginTop="5dp"
-                        />
+                <ImageView
+                    android:id="@+id/imgOfShow"
+                    android:layout_width="120dp"
+                    android:layout_height="110dp"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="center|top"
+                    android:src="#88888888"
+                    android:layout_marginTop="5dp"
+                    />
+                <ProgressBar
+                    android:id="@+id/progressBarTvDetails"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:visibility="gone"
+                    android:layout_gravity="center" />
 
 
                 <androidx.appcompat.widget.Toolbar
@@ -117,7 +123,6 @@
             android:layout_marginRight="22dp"
             android:layout_weight="1"
             android:background="@drawable/comment_bt_selector"
-
             android:gravity="center_vertical"
             android:paddingLeft="18dp"
             android:text="Yorum yap..."

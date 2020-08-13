@@ -3,6 +3,7 @@ package com.example.makecomment.Activities;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,11 +46,9 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MyActivity";
 
-
     private RecyclerView recyclerView;
     private ParseAdapter adapter;
     private ArrayList<ParseItem> parseItems = new ArrayList<>();
-    public static int commentCount;
 
     //UI
     private ImageView logo;
@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView afterNowTV;
     private ConstraintLayout constraintLayout;
     private ConstraintLayout constraintLayoutSecond;
-
     private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private TextView commentCountTextView;
@@ -69,14 +68,64 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser mUser;
     FirebaseDatabase mDb;
-    public static boolean isRefreshClicked = false;
 
+    public static int commentCount;
+    public static boolean isRefreshClicked = false;
+    private Boolean exit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initUI();
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            profile.setVisibility(View.GONE);
+            login.setVisibility(View.VISIBLE);
+        }
+
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        refreshButtonNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {//next shows
+                whenGoNext();
+            }
+        });
+        refreshButtonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {//current shows and
+                whenGoBack();
+            }
+        });
+
+        loadItems();
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadItems();
+            }
+        });
+
+    }
+
+    private void initUI(){
         logo = findViewById(R.id.logo);
         progressBar = findViewById(R.id.progressBar);
         recyclerView = findViewById(R.id.recyclerView);
@@ -91,86 +140,69 @@ public class MainActivity extends AppCompatActivity {
         constraintLayout = findViewById(R.id.linearLayout);
         constraintLayoutSecond = findViewById(R.id.linearLayoutSecond);
 
-
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
         mDb = FirebaseDatabase.getInstance();
-
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null) {
-            profile.setVisibility(View.GONE);
-            login.setVisibility(View.VISIBLE);
-        }
-
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
-                startActivity(intent);
-            }
-        });
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ParseAdapter(parseItems, this);
         recyclerView.setAdapter(adapter);
+    }
 
-        refreshButtonNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isRefreshClicked = true;
-                refreshButtonBack.setVisibility(View.VISIBLE);
-                refreshButtonNext.setVisibility(View.GONE);
-                afterNowTV.setVisibility(View.VISIBLE);
-                rightNowTV.setVisibility(View.GONE);
-                constraintLayout.setBackgroundResource(R.drawable.gradient_reverse);
-                constraintLayoutSecond.setBackgroundResource(R.drawable.gradient_reverse);
-                swipeRefreshLayout.setBackgroundResource(R.drawable.gradient_reverse);
-                swipeRefreshLayout.setEnabled(false);
-                loadItems();
-
-
-            }
-        });
-        refreshButtonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isRefreshClicked = false;
-                refreshButtonNext.setVisibility(View.VISIBLE);
-                refreshButtonBack.setVisibility(View.GONE);
-                afterNowTV.setVisibility(View.GONE);
-                rightNowTV.setVisibility(View.VISIBLE);
-                constraintLayout.setBackgroundResource(R.drawable.gradient);
-                constraintLayoutSecond.setBackgroundResource(R.drawable.gradient);
-                swipeRefreshLayout.setBackgroundResource(R.drawable.gradient);
-                swipeRefreshLayout.setEnabled(true);
-                loadItems();
-            }
-        });
-
+    private void whenGoBack(){
+        isRefreshClicked = false;
+        refreshButtonNext.setVisibility(View.VISIBLE);
+        refreshButtonBack.setVisibility(View.GONE);
+        afterNowTV.setVisibility(View.GONE);
+        rightNowTV.setVisibility(View.VISIBLE);
+        constraintLayout.setBackgroundResource(R.drawable.gradient);
+        constraintLayoutSecond.setBackgroundResource(R.drawable.gradient);
+        swipeRefreshLayout.setBackgroundResource(R.drawable.gradient);
+        swipeRefreshLayout.setEnabled(true);
         loadItems();
+    }
 
-            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    loadItems();
-                }
-            });
+    private void whenGoNext(){
+        isRefreshClicked = true;
+        refreshButtonBack.setVisibility(View.VISIBLE);
+        refreshButtonNext.setVisibility(View.GONE);
+        afterNowTV.setVisibility(View.VISIBLE);
+        rightNowTV.setVisibility(View.GONE);
+        constraintLayout.setBackgroundResource(R.drawable.gradient_reverse);
+        constraintLayoutSecond.setBackgroundResource(R.drawable.gradient_reverse);
+        swipeRefreshLayout.setBackgroundResource(R.drawable.gradient_reverse);
+        swipeRefreshLayout.setEnabled(false);
+        loadItems();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(isRefreshClicked){
+            whenGoBack();
+        }else{
+            if (exit) {
+                finish(); // finish activity
+            } else {
+                Toast.makeText(this, "Çıkmak için Geri tuşuna tekrar basın",
+                        Toast.LENGTH_SHORT).show();
+                exit = true;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        exit = false;
+                    }
+                }, 3 * 1000);
+
+            }
+        }
+
 
     }
 
     private void loadItems() {
         Content content = new Content();
         content.execute();
-
     }
 
     private class Content extends AsyncTask<Void,Void,Void>{

@@ -1,19 +1,23 @@
 package com.example.makecomment.Activities;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,79 +63,39 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
     private TextView commentField;
     private Button sendComment;
     private LinearLayout linearLayout;
+    private CollapsingToolbarLayout collapsingToolbar;
+    private ProgressBar progressBar;
 
-    String channelNumber;
+    private String channelNumber;
 
-    FirebaseAuth mAuth;
-    FirebaseUser mUser;
-    FirebaseDatabase mDb;
-
-    RecyclerView commentRV;
-    //CommentAdapter commentAdapter;
-    List<Comment> listOfComment;
-    static String COMMENT_KEY = "CommentKey" ;
+    private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
+    private FirebaseDatabase mDb;
+    private GoogleSignInAccount signInAccount;
+    private RecyclerView commentRV;
+    private List<Comment> listOfComment;
+    private static String COMMENT_KEY = "CommentKey" ;
 
     private BottomSheetDialog dialog;
-    static String titleForTry ;
-    static String instaUserName;
+    private String imagePicasso;
+    private String time;
+    private String duration;
+    private int imagePicasso2;
+    private static String instaUserName;
+    private static String title;
     private Toolbar toolbar;
     private LinearLayoutManager mLinearLayoutManager;
+
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tv_details);
 
-        //For full screen and hide actionbar
-       /* Window window = getWindow();
-        window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        getSupportActionBar().hide();*/
+        initUI();
 
-        //nameOfShow = findViewById(R.id.titleOfShow);
-        userImg = findViewById(R.id.commentUserImg);
-        imgOfShow = findViewById(R.id.imgOfShow);
-        commentField = findViewById(R.id.commentField);
-        //sendComment = findViewById(R.id.commentSendButton);
-        commentRV = findViewById(R.id.commentRV);
-        linearLayout = findViewById(R.id.bottomLinearLayout);
-
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
-        mDb = FirebaseDatabase.getInstance();
-
-        if(mUser==null){
-            linearLayout.setVisibility(View.GONE);
-        }
-
-        channelNumber = getIntent().getExtras().getString("whichChannel");
-        //GET DATA from ParseAdapter class
-        String imagePicasso = getIntent().getExtras().getString("imageUrl");
-        int imagePicasso2 = getIntent().getIntExtra("imageUrl",0);
-        Log.d(TAG, "simge"+ imagePicasso);//show's image
-        final String title = getIntent().getExtras().getString("titleName");//show's title
-        titleForTry = title;
-        final String time = getIntent().getExtras().getString("starttime");//show's start time
-        String duration = getIntent().getExtras().getString("durationMinute");//show's duration (minute)
-
-        CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle(titleForTry);
-        collapsingToolbar.setCollapsedTitleTypeface(ResourcesCompat.getFont(this,R.font.baloo));//todo:font
-
-        commentField.setOnClickListener(this);
-
-
-        GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
-
-        if(imagePicasso == null){
-            imgOfShow.setImageResource(imagePicasso2);
-        }else{
-            Picasso.get().load(imagePicasso).into(imgOfShow);//head photo of tv program
-        }
-
-        if(signInAccount != null){
-            Picasso.get().load(signInAccount.getPhotoUrl()).into(userImg);
-            getInstaUserName();
-        }
+        getDataFromParseAdapter();
 
         SimpleDateFormat df = new SimpleDateFormat("HH:mm");//adding duration to start time and finding the finish hour
         Date d = null;
@@ -151,7 +115,7 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.hasChild(channelNumber)) {
                     //Toast.makeText(TvDetails.this, "Burda yorum var", Toast.LENGTH_SHORT).show();///todo:önce yorum var mı diye kontrol ediyo
-                    try {//Check if tv show finished or still live
+                    try {//Check if tv show finished or still running
                         Calendar now = Calendar.getInstance();
                         String current_hour = now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
                         String st_hour = time;
@@ -162,8 +126,7 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
                         Date enh = format.parse(en_hour);
                         Date nowh = format.parse(current_hour );
                         if (nowh != null) {
-                            if (nowh.before(enh) && nowh.after(sth) && sth.before(enh)
-                                    || enh.before(sth) && !(nowh.before(enh) && nowh.after(sth))) {
+                            if (nowh.before(enh) && nowh.after(sth) && sth.before(enh) || enh.before(sth) && !(nowh.before(enh) && nowh.after(sth))) {
                                 Log.d(TAG, "gecti");
                             } else {
                                 Toast.makeText(TvDetails.this, "Yeni Program Başladı", Toast.LENGTH_SHORT).show();//saati geçti ve yorumlar silindi
@@ -206,13 +169,61 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
 
         initCommentRV();
     }
+
+    private void initUI(){
+        userImg = findViewById(R.id.commentUserImg);
+        imgOfShow = findViewById(R.id.imgOfShow);
+        commentField = findViewById(R.id.commentField);
+        commentRV = findViewById(R.id.commentRV);
+        linearLayout = findViewById(R.id.bottomLinearLayout);
+        collapsingToolbar = findViewById(R.id.collapsing_toolbar);
+        progressBar = findViewById(R.id.progressBarTvDetails);
+
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+        mDb = FirebaseDatabase.getInstance();
+
+        signInAccount = GoogleSignIn.getLastSignedInAccount(this);
+
+
+        if(mUser==null){
+            linearLayout.setVisibility(View.GONE);
+        }
+        if(signInAccount != null){
+            Picasso.get().load(signInAccount.getPhotoUrl()).into(userImg);
+            getInstaUserName();
+        }
+        commentField.setOnClickListener(this);
+
+    }
+    private void getDataFromParseAdapter(){
+        channelNumber = getIntent().getExtras().getString("whichChannel");
+        imagePicasso = getIntent().getExtras().getString("imageUrl");//default channel icon
+        imagePicasso2 = getIntent().getIntExtra("imageUrl",0);//custom channel icon
+        title = getIntent().getExtras().getString("titleName");//show's title
+        time = getIntent().getExtras().getString("starttime");//show's start time
+        duration = getIntent().getExtras().getString("durationMinute");//show's duration (minute)
+
+        collapsingToolbar.setTitle(title);//todo: setting title to collapsingToolbar
+        collapsingToolbar.setCollapsedTitleTypeface(ResourcesCompat.getFont(this,R.font.baloo));//todo:font
+
+        if(imagePicasso == null){
+            imgOfShow.setImageResource(imagePicasso2);
+        }else{
+            Picasso.get().load(imagePicasso).into(imgOfShow);//head photo of tv program
+        }
+    }
+
     public void goYourProfile(View view) {
         Intent intent=new Intent(getApplicationContext(),ProfileActivity.class);
         startActivity(intent);
     }
 
     private void initCommentRV() {
+        progressBar.setVisibility(View.VISIBLE);
+        imgOfShow.setVisibility(View.GONE);
 
+        handler = new Handler();
         listOfComment = new ArrayList<>();
         final CommentAdapter adapter = new CommentAdapter(TvDetails.this,listOfComment);
 
@@ -231,7 +242,15 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
                 mLinearLayoutManager = new LinearLayoutManager(TvDetails.this);
                 mLinearLayoutManager.setReverseLayout(true);
                 commentRV.setLayoutManager(mLinearLayoutManager);
-                commentRV.setAdapter(adapter);
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        commentRV.setAdapter(adapter);
+                        progressBar.setVisibility(View.GONE);
+                        imgOfShow.setVisibility(View.VISIBLE);
+                    }
+                }, 1000);
+
+
 
             }
 
@@ -260,6 +279,10 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
         final Button commentField = (Button) commentView.findViewById(R.id.dialog_comment_bt);
         dialog.setContentView(commentView);
 
+        commentText.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+
         View parent = (View) commentView.getParent();
         BottomSheetBehavior behavior = BottomSheetBehavior.from(parent);
         commentView.measure(0,0);
@@ -269,6 +292,7 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
 
             @Override
             public void onClick(View view) {
+
                 String commentContent = commentText.getText().toString().trim();
                 if(!TextUtils.isEmpty(commentContent)){
 
@@ -282,7 +306,7 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
                     String uid = mUser.getUid();
                     String uImg = mUser.getPhotoUrl().toString();
                     String uName = mUser.getDisplayName();
-                    String showName = titleForTry;
+                    String showName = title;
                     String instagramUserName = instaUserName;
 
 
