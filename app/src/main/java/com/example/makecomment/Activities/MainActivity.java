@@ -34,7 +34,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MyActivity";
@@ -151,8 +156,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
         loadItems();
 
             swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -161,8 +164,6 @@ public class MainActivity extends AppCompatActivity {
                     loadItems();
                 }
             });
-
-
 
     }
 
@@ -206,8 +207,6 @@ public class MainActivity extends AppCompatActivity {
                 Elements data = doc.select("li.liakiskanal");
                 Elements dataText = doc.select("li.liakissuanda");
                 Elements dataTextNext = doc.select("li.liakisgelecek").not(".liakisson");
-                Log.d(TAG, "harbiyeter  "+ dataText);
-                Log.d(TAG, "selamke  "+ dataTextNext);
 
                 int size = data.size();//get all commentCount of elements
                 for(int i =0 ; i<size ; i++){
@@ -221,11 +220,16 @@ public class MainActivity extends AppCompatActivity {
                             .eq(i)
                             .text();
 
-                    String titleNext = dataTextNext.select("li.liakisgelecek")//todo:title
+                    String titleNext = dataTextNext.select("li.liakisgelecek")//todo:next show's title
                             .eq(i)
                             .text();
 
-                    String time = dataText.select("li.liakissuanda")//todo:title
+                    String time = dataText.select("li.liakissuanda")//todo:show's start time
+                            .select("span")
+                            .eq(i)
+                            .text();
+
+                    String timeNextShow = dataTextNext.select("li.liakisgelecek")//todo:next show's start time
                             .select("span")
                             .eq(i)
                             .text();
@@ -236,16 +240,23 @@ public class MainActivity extends AppCompatActivity {
                             .text();
                     duration = duration.replaceAll("\\D+","");//todo: get only digits
 
-                    String[] arr = title.split("\\d+", 2);//parse for the name of show not time or duration
+                    String[] arr = title.split("\\d+", 2);//todo:parse for the name of the show's not time or duration
                     final String parseTitle = arr[0].trim();
 
-
-                    String[] arrNext = titleNext.split("\\d+", 2);//parse for the name of show not time or duration
+                    String[] arrNext = titleNext.split("\\d+", 2);//todo:parse for the name of the next show's not time or duration
                     final String parseTitleNext = arrNext[0].trim();
+
+                    Calendar now = Calendar.getInstance();
+                    int currentHour = now.get(Calendar.HOUR_OF_DAY);
+                    int currentMİnute = now.get(Calendar.MINUTE);
+                    String currentTime = (currentHour+":"+currentMİnute);//todo:find the current time
+
+                    String remainTime = calculateTime(currentTime,timeNextShow);//todo:find the difference between two times
 
                     final String imgUrl1=imgUrl;
                     final String duration1=duration;
                     final String time1=time;
+                    final String remainTime1 = remainTime;
                     final int n = i;
 
                     DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Comment");
@@ -257,12 +268,12 @@ public class MainActivity extends AppCompatActivity {
                             Log.d(TAG, n+" helin "+commentCount);
 
                             if(!isRefreshClicked){
-                                parseItems.add(new ParseItem(imgUrl1, parseTitle,duration1,commentCount,isRefreshClicked,time1));
+                                parseItems.add(new ParseItem(imgUrl1, parseTitle,duration1,commentCount,isRefreshClicked,time1,remainTime1));
                                 adapter.notifyDataSetChanged();/** this line has to be here otherwise recylerview items doesnt populate the table */
 
                             }
                             else{
-                                parseItems.add(new ParseItem(imgUrl1, parseTitleNext,duration1,commentCount,isRefreshClicked,time1));
+                                parseItems.add(new ParseItem(imgUrl1, parseTitleNext,duration1,commentCount,isRefreshClicked,time1,remainTime1));
                                 adapter.notifyDataSetChanged();/** this line has to be here otherwise recylerview items doesnt populate the table */
 
                             }
@@ -278,9 +289,29 @@ public class MainActivity extends AppCompatActivity {
 
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
             return null;
         }
+
+        private String calculateTime(String start, String end) throws ParseException {
+
+            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+
+            Date date1 = format.parse(start);
+
+            Date date2 = format.parse(end);
+
+            long difference = date2.getTime() - date1.getTime();
+
+            int minutes = (int) TimeUnit.MILLISECONDS.toMinutes(difference);
+
+            if(minutes<0)minutes += 1440;
+
+            return  String.valueOf(minutes);
+        }
+
 
 
     }

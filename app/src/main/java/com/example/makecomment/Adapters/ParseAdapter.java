@@ -82,6 +82,15 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
             holder.yorumTextView.setClickable(true);
             holder.yorumTextView.setEnabled(true);
             holder.yorumTextView.setFocusable(true);
+
+            holder.remainTimeTextView.setClickable(true);
+            holder.remainTimeTextView.setEnabled(true);
+            holder.remainTimeTextView.setFocusable(true);
+
+            holder.peopleIcon.setVisibility(View.GONE);
+            holder.yorumTextView.setVisibility(View.GONE);
+            holder.commentCount.setVisibility(View.GONE);
+            holder.remainTimeTextView.setVisibility(View.GONE);
         }else{
             holder.imageView.setClickable(false);
             holder.imageView.setEnabled(false);
@@ -110,12 +119,27 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
             holder.yorumTextView.setClickable(false);
             holder.yorumTextView.setEnabled(false);
             holder.yorumTextView.setFocusable(false);
+
+            holder.remainTimeTextView.setClickable(false);
+            holder.remainTimeTextView.setEnabled(false);
+            holder.remainTimeTextView.setFocusable(false);
+
+            holder.peopleIcon.setVisibility(View.VISIBLE);
+            holder.yorumTextView.setVisibility(View.VISIBLE);
+            holder.commentCount.setVisibility(View.VISIBLE);
+            holder.remainTimeTextView.setVisibility(View.VISIBLE);
+
         }
 
         if (parseItem.getTitle().isEmpty()) {
             holder.textView.setText("?");
         } else{
             holder.textView.setText(parseItem.getTitle());
+        }
+        if (parseItem.getRemainTime().isEmpty()) {
+            holder.remainTimeTextView.setText("?");
+        } else{
+            holder.remainTimeTextView.setText(parseItem.getRemainTime()+" dk. kaldı");
         }
 
         if (parseItem.getCommentCount() == 0) {
@@ -173,6 +197,7 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
         TextView yorumTextView;
         TextView textView;
         TextView commentCount;
+        TextView remainTimeTextView;
         ConstraintLayout constraintLayout;
 
 
@@ -183,7 +208,7 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
             imageViewBackground = itemView.findViewById(R.id.backgroundImage);
             peopleIcon = itemView.findViewById(R.id.peopleIcon);
             yorumTextView = itemView.findViewById(R.id.commentCountText);
-
+            remainTimeTextView = itemView.findViewById(R.id.textViewRemainTime);
             textView = itemView.findViewById(R.id.textView);
             commentCount = itemView.findViewById(R.id.commentCount);
             constraintLayout = itemView.findViewById(R.id.constraintLayoutMain);

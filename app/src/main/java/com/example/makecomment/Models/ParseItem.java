@@ -10,29 +10,40 @@ public class ParseItem {
     private Object timestamp;
     private int  commentCount;
     private Boolean isClicked;
+    private String remainTime;
 
     public ParseItem() {
     }
 
-    public ParseItem(String imgUrl, String title, String durationMinute,int commentCount,Boolean isClicked ,String startTime) {
+    public ParseItem(String imgUrl, String title, String durationMinute,int commentCount,Boolean isClicked ,String startTime,String remainTime) {
         this.imgUrl = imgUrl;
         this.title = title;
         this.durationMinute = durationMinute;
         this.commentCount = commentCount;
         this.startTime = startTime;
+        this.remainTime= remainTime;
         this.isClicked = isClicked;
         this.timestamp = ServerValue.TIMESTAMP;
 
     }
 
-    public ParseItem(String imgUrl, String title, String durationMinute, int commentCount,Boolean isClicked,String startTime, Object timestamp) {
+    public ParseItem(String imgUrl, String title, String durationMinute, int commentCount,Boolean isClicked,String startTime,String remainTime, Object timestamp) {
         this.imgUrl = imgUrl;
         this.title = title;
         this.durationMinute = durationMinute;
         this.commentCount= commentCount;
         this.startTime = startTime;
+        this.remainTime = remainTime;
         this.isClicked = isClicked;
         this.timestamp = timestamp;
+    }
+
+    public String getRemainTime() {
+        return remainTime;
+    }
+
+    public void setRemainTime(String remainTime) {
+        this.remainTime = remainTime;
     }
 
     public Boolean getClicked() {
