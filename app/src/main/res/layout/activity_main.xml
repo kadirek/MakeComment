@@ -108,7 +108,7 @@
 
         <Button
             android:id="@+id/refreshButtonNext"
-            android:layout_width="40dp"
+            android:layout_width="115dp"
             android:layout_height="40dp"
             android:background="@drawable/pressed_button_next"
             app:layout_constraintStart_toEndOf="@id/rightNowtextView"
@@ -119,7 +119,7 @@
 
         <Button
             android:id="@+id/refreshButtonBack"
-            android:layout_width="40dp"
+            android:layout_width="115dp"
             android:layout_height="40dp"
             android:background="@drawable/pressed_button_back"
             app:layout_constraintStart_toEndOf="@id/afterNowtextView"

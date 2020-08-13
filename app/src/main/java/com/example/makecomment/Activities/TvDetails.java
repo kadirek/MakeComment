@@ -67,7 +67,7 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
     FirebaseDatabase mDb;
 
     RecyclerView commentRV;
-    CommentAdapter commentAdapter;
+    //CommentAdapter commentAdapter;
     List<Comment> listOfComment;
     static String COMMENT_KEY = "CommentKey" ;
 
@@ -75,7 +75,7 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
     static String titleForTry ;
     static String instaUserName;
     private Toolbar toolbar;
-
+    private LinearLayoutManager mLinearLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -212,26 +212,26 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
     }
 
     private void initCommentRV() {
-        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        linearLayoutManager.setReverseLayout(true);
-        commentRV.setLayoutManager(linearLayoutManager);
 
+        listOfComment = new ArrayList<>();
+        final CommentAdapter adapter = new CommentAdapter(TvDetails.this,listOfComment);
 
         DatabaseReference commentRef = mDb.getReference("Comment").child(channelNumber);
         commentRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                listOfComment = new ArrayList<>();
+                listOfComment.clear();
                 for (DataSnapshot snap:dataSnapshot.getChildren()) {
 
                     Comment comment = snap.getValue(Comment.class);
                     listOfComment.add(comment) ;
-
+                    adapter.notifyDataSetChanged();
                 }
 
-                commentAdapter = new CommentAdapter(TvDetails.this,listOfComment);//TvDetails.this has to wrote not getApplicationContext();
-                commentRV.setAdapter(commentAdapter);
-
+                mLinearLayoutManager = new LinearLayoutManager(TvDetails.this);
+                mLinearLayoutManager.setReverseLayout(true);
+                commentRV.setLayoutManager(mLinearLayoutManager);
+                commentRV.setAdapter(adapter);
 
             }
 
