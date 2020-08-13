@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     public static int commentCount;
     public static boolean isRefreshClicked = false;
     private Boolean exit = false;
+    private String text = "Birazdan başlayacak";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -339,9 +340,15 @@ public class MainActivity extends AppCompatActivity {
 
             int minutes = (int) TimeUnit.MILLISECONDS.toMinutes(difference);
 
-            if(minutes<0)minutes += 1440;
+            if(minutes<1){
+                //minutes += 1440;
+                return  text;
+            }else{
+                return String.valueOf(minutes);
 
-            return  String.valueOf(minutes);
+            }
+
+
         }
 
 

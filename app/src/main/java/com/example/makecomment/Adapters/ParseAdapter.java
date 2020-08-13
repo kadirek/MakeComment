@@ -2,6 +2,7 @@ package com.example.makecomment.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -131,15 +132,24 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
 
         }
 
-        if (parseItem.getTitle().isEmpty()) {
-            holder.textView.setText("?");
-        } else{
-            holder.textView.setText(parseItem.getTitle());
-        }
+
         if (parseItem.getRemainTime().isEmpty()) {
             holder.remainTimeTextView.setText("?");
         } else{
-            holder.remainTimeTextView.setText(parseItem.getRemainTime()+" dk. kaldı");
+            if(parseItem.getRemainTime().equals("Birazdan başlayacak")){
+                holder.remainTimeTextView.setText("Birazdan başlayacak");
+                holder.remainTimeTextView.setTextColor(Color.parseColor("#F47676"));
+                holder.textView.setText("");
+            }else{
+                holder.remainTimeTextView.setText(parseItem.getRemainTime()+" dk. kaldı");
+                holder.remainTimeTextView.setTextColor(Color.parseColor("#A2A1A1"));
+
+                if (parseItem.getTitle().isEmpty()) {
+                    holder.textView.setText("?");
+                } else{
+                    holder.textView.setText(parseItem.getTitle());
+                }
+            }
         }
 
         if (parseItem.getCommentCount() == 0) {
