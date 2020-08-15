@@ -94,7 +94,46 @@
                 </LinearLayout>
             </RelativeLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:id="@+id/warningLinearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:background="@drawable/comment_bt_selector"
+            android:visibility="gone"
+            >
+
+            <ImageView
+                android:id="@+id/warningImageView"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center|start"
+                android:background="@drawable/warn"
+                />
+
+            <TextView
+                android:id="@+id/warningTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:fontFamily="@font/baloo"
+                android:text="Haydi ilk yorumu sen yap"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+
+        </LinearLayout>
+
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
 
     <LinearLayout
         android:id="@+id/bottomLinearLayout"
@@ -105,7 +144,8 @@
         android:elevation="2dp"
         android:paddingLeft="5dp"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        >
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/commentUserImg"
             android:layout_width="46dp"
@@ -126,6 +166,35 @@
             android:gravity="center_vertical"
             android:paddingLeft="18dp"
             android:text="Yorum yap..."
+            android:textColor="#B6B6B6"
+            android:textSize="15sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottomLinearLayoutLogin"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_alignParentBottom="true"
+        android:background="#f0a5a5"
+        android:elevation="2dp"
+        android:paddingLeft="5dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/commentFieldLogin"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="22dp"
+            android:layout_weight="1"
+            android:background="@drawable/comment_bt_selector"
+            android:gravity="center_vertical"
+            android:paddingLeft="18dp"
+            android:text="Haydi ilk yorumunu yap"
             android:textColor="#B6B6B6"
             android:textSize="15sp" />
 

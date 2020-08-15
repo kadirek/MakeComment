@@ -11,13 +11,14 @@
         android:layout_margin="12dp"
         android:hint="Yorum yap..."
         android:textSize="14sp"
-        android:gravity="left|top"
-        android:paddingLeft="15dp"
+        android:gravity="start|top"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
         android:paddingTop="12dp"
         android:textColorHint="#929292"
         android:textColor="#808080"
-        android:inputType="text"
-        android:imeOptions="actionSend"/>
+        android:inputType="text|textMultiLine"
+       />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

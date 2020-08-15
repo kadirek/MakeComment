@@ -135,21 +135,23 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
 
         if (parseItem.getRemainTime().isEmpty()) {
             holder.remainTimeTextView.setText("?");
-        } else{
-            if(parseItem.getRemainTime().equals("Birazdan başlayacak")){
-                holder.remainTimeTextView.setText("Birazdan başlayacak");
-                holder.remainTimeTextView.setTextColor(Color.parseColor("#F47676"));
-                holder.textView.setText("");
-            }else{
-                holder.remainTimeTextView.setText(parseItem.getRemainTime()+" dk. kaldı");
-                holder.remainTimeTextView.setTextColor(Color.parseColor("#A2A1A1"));
+            Log.d(TAG, position+" nejla ");
+        } else if(parseItem.getRemainTime().equals("Birazdan başlayacak")){
+            Log.d(TAG, position+" nejla ");
 
-                if (parseItem.getTitle().isEmpty()) {
-                    holder.textView.setText("?");
-                } else{
-                    holder.textView.setText(parseItem.getTitle());
-                }
-            }
+            holder.remainTimeTextView.setText("Birazdan başlayacak");
+            holder.remainTimeTextView.setTextColor(Color.parseColor("#F47676"));
+        } else{
+            Log.d(TAG, position+" nejla ");
+
+            holder.remainTimeTextView.setText(parseItem.getRemainTime()+" dk. kaldı");
+            holder.remainTimeTextView.setTextColor(Color.parseColor("#A2A1A1"));
+        }
+
+        if (parseItem.getTitle().isEmpty() ) {
+            holder.textView.setText("");
+        } else{
+            holder.textView.setText(parseItem.getTitle());
         }
 
         if (parseItem.getCommentCount() == 0) {

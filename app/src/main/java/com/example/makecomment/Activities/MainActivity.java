@@ -339,6 +339,7 @@ public class MainActivity extends AppCompatActivity {
             long difference = date2.getTime() - date1.getTime();
 
             int minutes = (int) TimeUnit.MILLISECONDS.toMinutes(difference);
+            Log.d(TAG, "negadar "+minutes);
 
             if(minutes<1){
                 //minutes += 1440;

@@ -7,11 +7,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,8 +63,12 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
     private TextView nameOfShow;
     private ImageView userImg,imgOfShow;
     private TextView commentField;
+    private TextView commentFieldLogin;
     private Button sendComment;
     private LinearLayout linearLayout;
+    private LinearLayout linearLayoutLogin;
+    private LinearLayout linearLayoutWarning;
+    private LinearLayout linearLayoutRecyclerviewContainer;
     private CollapsingToolbarLayout collapsingToolbar;
     private ProgressBar progressBar;
 
@@ -159,6 +165,7 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
 
                             });
                 }
+
             }
 
             @Override
@@ -168,14 +175,19 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
         });
 
         initCommentRV();
+
     }
 
     private void initUI(){
         userImg = findViewById(R.id.commentUserImg);
         imgOfShow = findViewById(R.id.imgOfShow);
         commentField = findViewById(R.id.commentField);
+        commentFieldLogin = findViewById(R.id.commentFieldLogin);
         commentRV = findViewById(R.id.commentRV);
         linearLayout = findViewById(R.id.bottomLinearLayout);
+        linearLayoutLogin = findViewById(R.id.bottomLinearLayoutLogin);
+        linearLayoutWarning = findViewById(R.id.warningLinearLayout);
+        linearLayoutRecyclerviewContainer = findViewById(R.id.detail_page_comment_container);
         collapsingToolbar = findViewById(R.id.collapsing_toolbar);
         progressBar = findViewById(R.id.progressBarTvDetails);
 
@@ -188,10 +200,31 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
 
         if(mUser==null){
             linearLayout.setVisibility(View.GONE);
+            linearLayoutLogin.setVisibility(View.VISIBLE);
+            commentFieldLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent=new Intent(TvDetails.this,LoginActivity.class);
+                    startActivity(intent);
+                }
+            });
+            linearLayoutWarning.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent=new Intent(TvDetails.this,LoginActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
         if(signInAccount != null){
             Picasso.get().load(signInAccount.getPhotoUrl()).into(userImg);
             getInstaUserName();
+            linearLayoutWarning.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showCommentDialog();
+                }
+            });
         }
         commentField.setOnClickListener(this);
 
@@ -215,7 +248,7 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
     }
 
     public void goYourProfile(View view) {
-        Intent intent=new Intent(getApplicationContext(),ProfileActivity.class);
+        Intent intent=new Intent(this,ProfileActivity.class);
         startActivity(intent);
     }
 
@@ -239,20 +272,30 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
                     adapter.notifyDataSetChanged();
                 }
 
+
                 mLinearLayoutManager = new LinearLayoutManager(TvDetails.this);
                 mLinearLayoutManager.setReverseLayout(true);
                 commentRV.setLayoutManager(mLinearLayoutManager);
                 handler.postDelayed(new Runnable() {
                     public void run() {
                         commentRV.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
                         progressBar.setVisibility(View.GONE);
                         imgOfShow.setVisibility(View.VISIBLE);
+                        if(listOfComment.isEmpty()){
+                            linearLayoutWarning.setVisibility(View.VISIBLE);
+                            linearLayoutRecyclerviewContainer.setVisibility(View.GONE);
+                        }else{
+                            linearLayoutWarning.setVisibility(View.GONE);
+                            linearLayoutRecyclerviewContainer.setVisibility(View.VISIBLE);
+                        }
                     }
                 }, 1000);
 
 
 
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -282,6 +325,9 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
         commentText.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+
+        commentText.setImeOptions(EditorInfo.IME_ACTION_SEND);
+        commentText.setRawInputType(InputType.TYPE_CLASS_TEXT);
 
         View parent = (View) commentView.getParent();
         BottomSheetBehavior behavior = BottomSheetBehavior.from(parent);
