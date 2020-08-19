@@ -10,6 +10,15 @@
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linearLayoutCollectOfTwo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +26,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:padding="15dp"
-        android:background="@drawable/gradient"
         >
 
         <ImageView
@@ -65,12 +73,11 @@
         android:id="@+id/linearLayoutSecond"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/swipeLayout"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayoutCollectOfTwo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         android:padding="3dp"
-        android:background="@drawable/gradient"
         >
 
         <TextView
@@ -135,7 +142,7 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeLayout"
         android:layout_width="0dp"
@@ -143,7 +150,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutSecond"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCollectOfTwo"
         android:background="@color/fourthColor"
         >
 
@@ -165,6 +172,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+
 
 
 

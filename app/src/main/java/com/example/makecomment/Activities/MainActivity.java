@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView afterNowTV;
     private ConstraintLayout constraintLayout;
     private ConstraintLayout constraintLayoutSecond;
+    private ConstraintLayout constraintLayoutCollectOfTwo;
     private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private TextView commentCountTextView;
@@ -140,6 +141,8 @@ public class MainActivity extends AppCompatActivity {
         commentCountTextView = findViewById(R.id.commentCount);
         constraintLayout = findViewById(R.id.linearLayout);
         constraintLayoutSecond = findViewById(R.id.linearLayoutSecond);
+        constraintLayoutCollectOfTwo = findViewById(R.id.linearLayoutCollectOfTwo);
+        constraintLayoutCollectOfTwo.setBackgroundResource(R.drawable.gradient);
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
@@ -157,8 +160,7 @@ public class MainActivity extends AppCompatActivity {
         refreshButtonBack.setVisibility(View.GONE);
         afterNowTV.setVisibility(View.GONE);
         rightNowTV.setVisibility(View.VISIBLE);
-        constraintLayout.setBackgroundResource(R.drawable.gradient);
-        constraintLayoutSecond.setBackgroundResource(R.drawable.gradient);
+        constraintLayoutCollectOfTwo.setBackgroundResource(R.drawable.gradient);
         //swipeRefreshLayout.setBackgroundResource(R.drawable.gradient);
         swipeRefreshLayout.setEnabled(true);
         loadItems();
@@ -170,8 +172,7 @@ public class MainActivity extends AppCompatActivity {
         refreshButtonNext.setVisibility(View.GONE);
         afterNowTV.setVisibility(View.VISIBLE);
         rightNowTV.setVisibility(View.GONE);
-        constraintLayout.setBackgroundResource(R.drawable.gradient_reverse);
-        constraintLayoutSecond.setBackgroundResource(R.drawable.gradient_reverse);
+        constraintLayoutCollectOfTwo.setBackgroundResource(R.drawable.gradient_reverse);
         //swipeRefreshLayout.setBackgroundResource(R.drawable.gradient_reverse);
         swipeRefreshLayout.setEnabled(false);
         loadItems();
@@ -283,9 +284,11 @@ public class MainActivity extends AppCompatActivity {
                     int currentHour = now.get(Calendar.HOUR_OF_DAY);
                     int currentMİnute = now.get(Calendar.MINUTE);
                     String currentTime = (currentHour+":"+currentMİnute);//todo:find the current time
+                    Log.d(TAG, i+"anlik "+ currentTime);
+                    Log.d(TAG, i+"kila "+ timeNextShow);
 
                     String remainTime = calculateTime(currentTime,timeNextShow);//todo:find the difference between two times
-
+                    Log.d(TAG, i+"sonucolarak "+remainTime);
                     final String imgUrl1=imgUrl;
                     final String duration1=duration;
                     final String time1=time;
@@ -340,13 +343,9 @@ public class MainActivity extends AppCompatActivity {
 
             int minutes = (int) TimeUnit.MILLISECONDS.toMinutes(difference);
             Log.d(TAG, "negadar "+minutes);
+            if(minutes<0)minutes += 1440;
 
-            if(minutes<1){
-                //minutes += 1440;
-                return  text;
-            }else{
-                return String.valueOf(minutes);
-            }
+            return String.valueOf(minutes);
 
 
         }

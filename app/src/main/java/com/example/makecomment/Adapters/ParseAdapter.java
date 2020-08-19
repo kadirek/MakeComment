@@ -33,6 +33,7 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
     private String haberGlobal = "https://www.canlitv.vin/kanallar/haber-global.gif";
     private String dmax = "https://www.canlitv.vin/kanallar/d-max.png";
     private String remainText = "Birazdan başlayacak";
+    private int remain = 600;
 
     private ArrayList<ParseItem> parseItems;
     private Context context;
@@ -58,9 +59,9 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
 
 
         if(position % 2==0){
-            holder.constraintLayoutMain.setBackgroundResource(R.drawable.gradient_even);
-            }else if(position % 2==1){
             holder.constraintLayoutMain.setBackgroundResource(R.drawable.gradient_odd);
+            }else if(position % 2==1){
+            holder.constraintLayoutMain.setBackgroundResource(R.drawable.gradient_even);
         }
 
         if(parseItem.getClicked()){
@@ -143,7 +144,7 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
 
         if (parseItem.getRemainTime().isEmpty()) {
             holder.remainTimeTextView.setText("?");
-        } else if(parseItem.getRemainTime().equals(remainText)){
+        } else if(Integer.valueOf(parseItem.getRemainTime())>remain){
             holder.remainTimeTextView.setText(remainText);
             holder.remainTimeTextView.setTextColor(Color.parseColor("#F47676"));
         } else{

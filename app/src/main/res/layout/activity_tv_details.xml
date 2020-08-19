@@ -18,7 +18,7 @@
             android:layout_height="150dp"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:fitsSystemWindows="true"
-            android:background="@drawable/gradient">
+            android:background="@drawable/gradient_tv_details">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/collapsing_toolbar"
@@ -47,7 +47,8 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:visibility="gone"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:theme="@style/AppTheme"/>
 
 
                 <androidx.appcompat.widget.Toolbar
