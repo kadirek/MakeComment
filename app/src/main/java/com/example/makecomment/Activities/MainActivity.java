@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         rightNowTV.setVisibility(View.VISIBLE);
         constraintLayout.setBackgroundResource(R.drawable.gradient);
         constraintLayoutSecond.setBackgroundResource(R.drawable.gradient);
-        swipeRefreshLayout.setBackgroundResource(R.drawable.gradient);
+        //swipeRefreshLayout.setBackgroundResource(R.drawable.gradient);
         swipeRefreshLayout.setEnabled(true);
         loadItems();
     }
@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
         rightNowTV.setVisibility(View.GONE);
         constraintLayout.setBackgroundResource(R.drawable.gradient_reverse);
         constraintLayoutSecond.setBackgroundResource(R.drawable.gradient_reverse);
-        swipeRefreshLayout.setBackgroundResource(R.drawable.gradient_reverse);
+        //swipeRefreshLayout.setBackgroundResource(R.drawable.gradient_reverse);
         swipeRefreshLayout.setEnabled(false);
         loadItems();
     }
@@ -346,7 +346,6 @@ public class MainActivity extends AppCompatActivity {
                 return  text;
             }else{
                 return String.valueOf(minutes);
-
             }
 
 

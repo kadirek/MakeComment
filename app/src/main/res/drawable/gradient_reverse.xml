@@ -3,7 +3,7 @@
     <item>
         <shape>
             <gradient
-                android:startColor="@color/mainColor"
+                android:startColor="@color/secondColor"
                 android:endColor="@android:color/transparent"
                 android:angle="180"/>
         </shape>

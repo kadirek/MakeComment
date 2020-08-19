@@ -32,6 +32,7 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
     private String kanalYedi = "https://www.canlitv.vin/kanallar/kanal-7-canli-hd-izle-1.png";
     private String haberGlobal = "https://www.canlitv.vin/kanallar/haber-global.gif";
     private String dmax = "https://www.canlitv.vin/kanallar/d-max.png";
+    private String remainText = "Birazdan başlayacak";
 
     private ArrayList<ParseItem> parseItems;
     private Context context;
@@ -54,6 +55,13 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
         ParseItem parseItem = parseItems.get(position);
 
         Log.d(TAG, "suankidurumu "+ parseItem.getClicked());
+
+
+        if(position % 2==0){
+            holder.constraintLayoutMain.setBackgroundResource(R.drawable.gradient_even);
+            }else if(position % 2==1){
+            holder.constraintLayoutMain.setBackgroundResource(R.drawable.gradient_odd);
+        }
 
         if(parseItem.getClicked()){
             holder.imageView.setClickable(true);
@@ -135,15 +143,10 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
 
         if (parseItem.getRemainTime().isEmpty()) {
             holder.remainTimeTextView.setText("?");
-            Log.d(TAG, position+" nejla ");
-        } else if(parseItem.getRemainTime().equals("Birazdan başlayacak")){
-            Log.d(TAG, position+" nejla ");
-
-            holder.remainTimeTextView.setText("Birazdan başlayacak");
+        } else if(parseItem.getRemainTime().equals(remainText)){
+            holder.remainTimeTextView.setText(remainText);
             holder.remainTimeTextView.setTextColor(Color.parseColor("#F47676"));
         } else{
-            Log.d(TAG, position+" nejla ");
-
             holder.remainTimeTextView.setText(parseItem.getRemainTime()+" dk. kaldı");
             holder.remainTimeTextView.setTextColor(Color.parseColor("#A2A1A1"));
         }
@@ -211,6 +214,7 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
         TextView commentCount;
         TextView remainTimeTextView;
         ConstraintLayout constraintLayout;
+        ConstraintLayout constraintLayoutMain;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -224,6 +228,7 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
             textView = itemView.findViewById(R.id.textView);
             commentCount = itemView.findViewById(R.id.commentCount);
             constraintLayout = itemView.findViewById(R.id.constraintLayoutMain);
+            constraintLayoutMain = itemView.findViewById(R.id.constraintLayoutMainindeMaini);
 
 
             itemView.setOnClickListener(this);//todo:without this line you cant click items

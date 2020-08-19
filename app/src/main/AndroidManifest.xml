@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Activities.TvDetails"
-            android:screenOrientation="portrait"></activity>
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity android:name=".Activities.ProfileActivity" />
         <activity android:name=".Activities.RegisterActvity" />
         <activity android:name=".Activities.LoginActivity" />
