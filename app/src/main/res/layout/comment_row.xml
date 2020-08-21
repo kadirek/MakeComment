@@ -61,7 +61,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:text="10:20"
+        android:text="Şimdi"
         android:textColor="#585656"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

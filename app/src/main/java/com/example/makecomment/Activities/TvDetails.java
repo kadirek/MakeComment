@@ -40,6 +40,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -89,6 +90,7 @@ public class TvDetails extends AppCompatActivity  {
     private String imagePicasso;
     private String time;
     private String duration;
+    private String remainText;
     private int imagePicasso2;
     private static String instaUserName;
     private static String title;
@@ -99,7 +101,7 @@ public class TvDetails extends AppCompatActivity  {
     private EditText commentText;
     private View commentView;
     private Button shareCommentButton;
-
+    private TextView remainTimeTvDetails;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -197,6 +199,8 @@ public class TvDetails extends AppCompatActivity  {
         collapsingToolbar = findViewById(R.id.collapsing_toolbar);
         progressBar = findViewById(R.id.progressBarTvDetails);
         shareCommentButton = findViewById(R.id.dialog_comment_bt);
+        remainTimeTvDetails = findViewById(R.id.remainTimeTvDetails);
+
         dialog = new BottomSheetDialog(this);
         commentView = LayoutInflater.from(this).inflate(R.layout.comment_dialog_layout,null);
         commentText = (EditText) commentView.findViewById(R.id.dialog_comment_et);
@@ -232,11 +236,16 @@ public class TvDetails extends AppCompatActivity  {
             linearLayoutWarning.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    commentField.requestFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
                     showCommentDialog();
+
                 }
             });
         }
         commentField.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if(MotionEvent.ACTION_UP == motionEvent.getAction()){
@@ -255,9 +264,29 @@ public class TvDetails extends AppCompatActivity  {
         title = getIntent().getExtras().getString("titleName");//show's title
         time = getIntent().getExtras().getString("starttime");//show's start time
         duration = getIntent().getExtras().getString("durationMinute");//show's duration (minute)
+        remainText = getIntent().getExtras().getString("remainTimeText");//show's duration (minute)
 
         collapsingToolbar.setTitle(title);//todo: setting title to collapsingToolbar
         collapsingToolbar.setCollapsedTitleTypeface(ResourcesCompat.getFont(this,R.font.baloo));//todo:font
+        remainTimeTvDetails.setText(remainText+" dk. kaldı");
+
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);//todo: State of collapsing toolbar change visibility of remaintextview
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
+                    remainTimeTvDetails.setVisibility(View.GONE);
+                    // Collapsed
+                } else if (verticalOffset == 0) {
+                    // Expanded
+                    remainTimeTvDetails.setVisibility(View.VISIBLE);
+                } else {
+                    remainTimeTvDetails.setVisibility(View.VISIBLE);
+                    // Somewhere in between
+                }
+            }
+        });
+
 
         if(imagePicasso == null){
             imgOfShow.setImageResource(imagePicasso2);
@@ -399,12 +428,14 @@ public class TvDetails extends AppCompatActivity  {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+                if (commentField.getLineCount() == commentField.getMaxLines()) {
+                    commentField.setMaxLines((commentField.getLineCount() + 1));
+                }
             }
         });
     }
     @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
+    public boolean dispatchTouchEvent(MotionEvent ev) {//todo:when click outside of edittext closing the keyboard
         if (getCurrentFocus() != null) {
             userImg.setVisibility(View.VISIBLE);
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

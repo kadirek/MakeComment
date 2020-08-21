@@ -242,6 +242,7 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
             //Toast.makeText(context, position+".kanal", Toast.LENGTH_SHORT).show();
             tvDetails.putExtra("whichChannel",String.valueOf(getAdapterPosition()));
             tvDetails.putExtra("titleName",parseItems.get(position).getTitle());
+            tvDetails.putExtra("remainTimeText",parseItems.get(position).getRemainTime());
            // tvDetails.putExtra("imageUrl",parseItems.get(position).getImgUrl());
             if (parseItems.get(position).getImgUrl().isEmpty()) {
                 tvDetails.putExtra("imageUrl",R.drawable.icon);

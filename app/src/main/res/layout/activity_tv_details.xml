@@ -58,6 +58,26 @@
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                     app:layout_collapseMode="pin" />
 
+                <LinearLayout
+                    android:id="@+id/layout_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:gravity="end"
+                    app:layout_collapseMode="pin">
+
+                    <TextView
+                        android:id="@+id/remainTimeTvDetails"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:textSize="15sp"
+                        android:layout_gravity="top"
+                        android:fontFamily="@font/baloo"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                </LinearLayout>
+
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -176,11 +196,11 @@
 
         <Button
             android:id="@+id/dialog_comment_bt"
-            android:layout_width="72dp"
-            android:layout_height="32dp"
+            android:layout_width="60dp"
+            android:layout_height="46dp"
             android:background="@drawable/pressed_button"
             android:textColor="@color/gray"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:layout_alignParentRight="true"
             android:layout_marginEnd="6dp"
             android:text="Paylaş"
