@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_tv_details">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="5dp">
+    <Button
+        android:id="@+id/editInstagramButton"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/instagram_username_add_button"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/imageConstraintLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="25dp"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profilePhoto"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            app:civ_border_width="3dp"
+            app:civ_border_color="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/nameConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toBottomOf="@+id/imageConstraintLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        >
+
+        <TextView
+            android:id="@+id/nameText"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:textSize="10sp"
+            android:gravity="center|start"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textColor="@color/gray"
+            android:textStyle="bold"
+            android:background="@drawable/rounded_corners"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/emailConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toBottomOf="@+id/nameConstraintLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        >
+
+        <TextView
+            android:id="@+id/emailText"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:textSize="10sp"
+            android:textColor="@color/gray"
+            android:textStyle="bold"
+            android:gravity="center|start"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:background="@drawable/rounded_corners"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/instagramConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toBottomOf="@+id/emailConstraintLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        >
+
+        <Button
+            android:id="@+id/instagramButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/instagram_button"
+            />
+        <TextView
+            android:id="@+id/instagramText"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:textSize="10sp"
+            android:textColor="@color/gray"
+            android:textStyle="bold"
+            android:gravity="center|start"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:background="@drawable/rounded_corners"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="42dp"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/instagramConstraintLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+
+        <Button
+            android:id="@+id/logout"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:text="Çıkış Yap"
+            android:textStyle="bold"
+            android:textSize="10sp"
+            android:gravity="center"
+            android:textColor="@color/grayReal"
+            android:background="@drawable/pressed_button"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="1dp"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

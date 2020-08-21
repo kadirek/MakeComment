@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.TvDetails">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/main_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="135dp"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:fitsSystemWindows="true"
+            android:background="@drawable/gradient_tv_details">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                android:fitsSystemWindows="true"
+                app:contentScrim="#f0a5a5"
+                app:expandedTitleMarginStart="5dp"
+                app:expandedTitleMarginBottom="5dp"
+                app:expandedTitleTextAppearance="@style/BigHeaderTitleStyle"
+                app:collapsedTitleTextAppearance="@style/SmallHeaderTitleStyle"
+                >
+
+                <ImageView
+                    android:id="@+id/imgOfShow"
+                    android:layout_width="104dp"
+                    android:layout_height="95dp"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="center|top"
+                    android:src="#88888888"
+                    android:layout_marginTop="3dp"
+                    />
+                <ProgressBar
+                    android:id="@+id/progressBarTvDetails"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:visibility="gone"
+                    android:layout_gravity="center"
+                    android:theme="@style/AppTheme"/>
+
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:layout_collapseMode="pin" />
+
+                <LinearLayout
+                    android:id="@+id/layout_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:gravity="end"
+                    app:layout_collapseMode="pin">
+
+                    <TextView
+                        android:id="@+id/remainTimeTvDetails"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="6dp"
+                        android:textSize="10sp"
+                        android:layout_gravity="top"
+                        android:fontFamily="@font/baloo"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                </LinearLayout>
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:id="@+id/detail_page_above_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/detail_page_comment_container"
+                    android:layout_below="@+id/detail_page_above_container"
+                    android:layout_marginTop="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/commentRV"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="49dp"
+                        android:scrollbars="none" />
+
+                </LinearLayout>
+            </RelativeLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:id="@+id/warningLinearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:background="@drawable/comment_bt_selector"
+            android:visibility="gone"
+            >
+
+            <ImageView
+                android:id="@+id/warningImageView"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center|start"
+                android:background="@drawable/warn"
+                />
+
+            <TextView
+                android:id="@+id/warningTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:paddingStart="7dp"
+                android:paddingEnd="7dp"
+                android:fontFamily="@font/baloo"
+                android:text="Haydi ilk yorumu sen yap"
+                android:textColor="@color/black"
+                android:textSize="10sp" />
+
+
+        </LinearLayout>
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/bottomLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_alignParentBottom="true"
+        android:background="#f0a5a5"
+        android:elevation="2dp"
+        android:paddingLeft="3dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/commentUserImg"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#F0EDEC"
+            android:onClick="goYourProfile"
+            />
+
+        <EditText
+            android:id="@+id/commentField"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/comment_bt_selector"
+            android:gravity="center_vertical"
+            android:paddingStart="13dp"
+            android:paddingEnd="13dp"
+            android:hint="Yorum yap..."
+            android:textColor="@color/hintColor"
+            android:textSize="11sp"
+            android:inputType="text|textMultiLine"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
+
+        <Button
+            android:id="@+id/dialog_comment_bt"
+            android:layout_width="50dp"
+            android:layout_height="36dp"
+            android:background="@drawable/pressed_button"
+            android:textColor="@color/gray"
+            android:textSize="9sp"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="4dp"
+            android:text="Paylaş"
+            android:textAllCaps="false"
+            android:layout_gravity="center"
+            android:gravity="center"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottomLinearLayoutLogin"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_alignParentBottom="true"
+        android:background="#f0a5a5"
+        android:elevation="2dp"
+        android:paddingLeft="3dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/commentFieldLogin"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="17dp"
+            android:layout_weight="1"
+            android:background="@drawable/comment_bt_selector"
+            android:gravity="center_vertical"
+            android:paddingLeft="13dp"
+            android:text="Haydi ilk yorumunu yap"
+            android:textColor="#B6B6B6"
+            android:textSize="11sp" />
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

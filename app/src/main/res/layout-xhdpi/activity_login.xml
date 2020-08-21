@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.LoginActivity"
+    android:orientation="horizontal"
+    android:layout_gravity="center">
+
+
+        <Button
+            android:id="@+id/signInButton"
+            android:layout_width="240dp"
+            android:layout_height="80dp"
+            android:text="Giriş Yap"
+            android:fontFamily="@font/baloo"
+            android:textColor="#262626"
+            android:background="@drawable/pressed_button"
+            android:gravity="center"
+            android:layout_gravity="center"
+            />
+
+
+
+
+</ScrollView>

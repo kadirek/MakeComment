@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activities.MainActivity"
+
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linearLayoutCollectOfTwo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="12dp"
+        >
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="140dp"
+            android:layout_height="35dp"
+            android:background="@drawable/logo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+        <Button
+            android:id="@+id/signInButton"
+            android:layout_width="88dp"
+            android:layout_height="35dp"
+            android:text="Giriş Yap"
+            android:fontFamily="@font/baloo"
+            android:textColor="#262626"
+            android:background="@drawable/pressed_button"
+            android:visibility="gone"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="1dp"
+            />
+
+        <Button
+            android:id="@+id/profileButton"
+            android:layout_width="88dp"
+            android:layout_height="35dp"
+            android:text="Profil"
+            android:fontFamily="@font/baloo"
+            android:textColor="#262626"
+            android:textSize="10sp"
+            android:background="@drawable/pressed_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="1dp"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linearLayoutSecond"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayoutCollectOfTwo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        android:padding="2dp"
+        >
+
+        <TextView
+        android:id="@+id/rightNowtextView"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/baloo"
+        android:maxLines="1"
+        android:text="Şuanda Yayında"
+        android:textColor="@color/gray"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/refreshButtonNext"
+        />
+
+        <TextView
+            android:id="@+id/afterNowtextView"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/baloo"
+            android:maxLines="1"
+            android:text="Gelecek Yayın"
+            android:textColor="@color/gray"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/refreshButtonBack"
+            android:visibility="gone"
+            />
+
+        <Button
+            android:id="@+id/refreshButtonNext"
+            android:layout_width="92dp"
+            android:layout_height="33dp"
+            android:background="@drawable/pressed_button_next"
+            app:layout_constraintStart_toEndOf="@id/rightNowtextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+        <Button
+            android:id="@+id/refreshButtonBack"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:background="@drawable/pressed_button_back"
+            app:layout_constraintStart_toEndOf="@id/afterNowtextView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
+            />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCollectOfTwo"
+        android:background="@color/fourthColor"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

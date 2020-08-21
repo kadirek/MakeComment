@@ -268,7 +268,13 @@ public class TvDetails extends AppCompatActivity  {
 
         collapsingToolbar.setTitle(title);//todo: setting title to collapsingToolbar
         collapsingToolbar.setCollapsedTitleTypeface(ResourcesCompat.getFont(this,R.font.baloo));//todo:font
-        remainTimeTvDetails.setText(remainText+" dk. kaldı");
+        if(remainText.isEmpty()){
+            remainTimeTvDetails.setText("?");
+        } else if(Integer.valueOf(remainText) > 600){
+            remainTimeTvDetails.setText("Birazdan başlayacak");
+        }else{
+            remainTimeTvDetails.setText(remainText+" dk. kaldı");
+        }
 
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);//todo: State of collapsing toolbar change visibility of remaintextview
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -364,6 +370,7 @@ public class TvDetails extends AppCompatActivity  {
 */
 
     private void showCommentDialog() {
+        linearLayoutWarning.setVisibility(View.GONE);
         commentField.setImeOptions(EditorInfo.IME_ACTION_SEND);
         commentField.setRawInputType(InputType.TYPE_CLASS_TEXT);
 

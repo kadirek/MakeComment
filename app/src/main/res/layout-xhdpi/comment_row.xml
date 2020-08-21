@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_corners"
+    android:layout_marginTop="3dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/commentUserImgShare"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:civ_border_width="2dp"
+        app:civ_border_color="#FFFFFF"
+        />
+
+    <TextView
+        android:textColor="#393737"
+        android:textStyle="bold"
+        android:id="@+id/commentUsernameShare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="5dp"
+        android:text="TextView"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/commentUserImgShare"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/commentContentShare"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:text="Text Comment Goes Here"
+        android:textColor="#585656"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/commentUserImgShare"
+        app:layout_constraintTop_toBottomOf="@+id/commentUsernameShare" />
+
+    <TextView
+        android:textSize="10sp"
+        android:id="@+id/commentDateShare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        android:text="Şimdi"
+        android:textColor="#585656"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/commentUsernameShare"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

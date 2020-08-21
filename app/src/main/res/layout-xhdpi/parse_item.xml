@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayoutMain"
         android:layout_width="match_parent"
-        android:layout_height="125dp"
+        android:layout_height="110dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,7 +20,7 @@
         <ImageView
             android:id="@+id/backgroundImage"
             android:layout_width="match_parent"
-            android:layout_height="125dp"
+            android:layout_height="110dp"
             android:layout_gravity="bottom"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,11 +30,11 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="100dp"
-            android:layout_height="90dp"
+            android:layout_width="84dp"
+            android:layout_height="75dp"
             android:scaleType="centerCrop"
             android:src="#88888888"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="3dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -47,7 +47,7 @@
             android:maxLines="1"
             android:text="Title"
             android:textColor="@color/grayReal"
-            android:textSize="15sp"
+            android:textSize="10sp"
             android:textStyle="normal"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="5dp"
@@ -64,20 +64,26 @@
             android:maxLines="1"
             android:text="Title"
             android:textColor="@color/gray"
-            android:textSize="15sp"
+            android:textSize="10sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="3dp"
              />
-
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayoutEndBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
         <ImageView
             android:id="@+id/peopleIcon"
             android:layout_width="60dp"
             android:layout_height="60dp"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="3dp"
             android:background="@drawable/comment_icon" />
@@ -91,11 +97,13 @@
             android:textColor="@color/gray"
             android:maxLines="1"
             android:fontFamily="@font/baloo"
-            android:textSize="15sp"
+            android:textSize="12sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="36dp"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="33dp"
+            android:layout_marginBottom="18dp"
+            android:layout_marginEnd="6dp"
             />
         <TextView
             android:id="@+id/commentCountText"
@@ -107,15 +115,15 @@
             android:textColor="@color/gray"
             android:maxLines="1"
             android:fontFamily="@font/baloo"
-            android:textSize="15sp"
+            android:textSize="10sp"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="15dp"
+            android:layout_marginEnd="17dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="60dp"
+            android:layout_marginBottom="62dp"
 
 
             />
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
