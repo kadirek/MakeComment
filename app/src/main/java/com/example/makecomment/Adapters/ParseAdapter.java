@@ -143,7 +143,7 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
 
 
         if (parseItem.getRemainTime().isEmpty()) {
-            holder.remainTimeTextView.setText("?");
+            holder.remainTimeTextView.setText("Bulunamadı");
         } else if(Integer.valueOf(parseItem.getRemainTime())>remain){
             holder.remainTimeTextView.setText(remainText);
             holder.remainTimeTextView.setTextColor(Color.parseColor("#F47676"));
@@ -153,7 +153,7 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
         }
 
         if (parseItem.getTitle().isEmpty() ) {
-            holder.textView.setText("");
+            holder.textView.setText("Bulunamadı!");
         } else{
             holder.textView.setText(parseItem.getTitle());
         }

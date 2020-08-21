@@ -22,18 +22,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/dialog_comment_bt"
-            android:layout_width="72dp"
-            android:layout_height="32dp"
-            android:background="@color/gray"
-            android:layout_marginBottom="14dp"
-            android:textColor="@android:color/white"
-            android:textSize="14sp"
-            android:layout_marginTop="6dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="12dp"
-            android:text="Paylaş"/>
+
     </RelativeLayout>
 
 </LinearLayout>

@@ -156,19 +156,37 @@
             android:onClick="goYourProfile"
             />
 
-        <TextView
+        <EditText
             android:id="@+id/commentField"
             android:layout_width="0dp"
             android:layout_height="46dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="22dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
             android:layout_weight="1"
             android:background="@drawable/comment_bt_selector"
             android:gravity="center_vertical"
-            android:paddingLeft="18dp"
-            android:text="Yorum yap..."
-            android:textColor="#B6B6B6"
-            android:textSize="15sp" />
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp"
+            android:hint="Yorum yap..."
+            android:textColor="@color/hintColor"
+            android:textSize="15sp"
+            android:inputType="text|textMultiLine"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
+
+        <Button
+            android:id="@+id/dialog_comment_bt"
+            android:layout_width="72dp"
+            android:layout_height="32dp"
+            android:background="@drawable/pressed_button"
+            android:textColor="@color/gray"
+            android:textSize="10sp"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="6dp"
+            android:text="Paylaş"
+            android:textAllCaps="false"
+            android:layout_gravity="center"
+            android:gravity="center"/>
 
 
     </LinearLayout>

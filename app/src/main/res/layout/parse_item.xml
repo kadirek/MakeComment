@@ -93,9 +93,9 @@
             android:fontFamily="@font/baloo"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="37dp"
+            android:layout_marginBottom="36dp"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="34dp"
+            android:layout_marginEnd="33dp"
             />
         <TextView
             android:id="@+id/commentCountText"

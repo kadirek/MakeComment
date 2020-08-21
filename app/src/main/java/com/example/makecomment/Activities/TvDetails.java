@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -12,6 +13,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -26,6 +28,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,13 +59,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class TvDetails extends AppCompatActivity implements View.OnClickListener {
+public class TvDetails extends AppCompatActivity  {
     private static final String TAG = "MyActivity";
 
     //UI
     private TextView nameOfShow;
     private ImageView userImg,imgOfShow;
-    private TextView commentField;
+    private EditText commentField;
     private TextView commentFieldLogin;
     private Button sendComment;
     private LinearLayout linearLayout;
@@ -93,6 +96,9 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
     private LinearLayoutManager mLinearLayoutManager;
 
     private Handler handler;
+    private EditText commentText;
+    private View commentView;
+    private Button shareCommentButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,6 +196,10 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
         linearLayoutRecyclerviewContainer = findViewById(R.id.detail_page_comment_container);
         collapsingToolbar = findViewById(R.id.collapsing_toolbar);
         progressBar = findViewById(R.id.progressBarTvDetails);
+        shareCommentButton = findViewById(R.id.dialog_comment_bt);
+        dialog = new BottomSheetDialog(this);
+        commentView = LayoutInflater.from(this).inflate(R.layout.comment_dialog_layout,null);
+        commentText = (EditText) commentView.findViewById(R.id.dialog_comment_et);
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
@@ -226,7 +236,16 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
                 }
             });
         }
-        commentField.setOnClickListener(this);
+        commentField.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(MotionEvent.ACTION_UP == motionEvent.getAction()){
+                    showCommentDialog();
+                }
+                return false;
+            }
+        });
+        //commentField.setOnClickListener(this);
 
     }
     private void getDataFromParseAdapter(){
@@ -306,46 +325,31 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
 
     }
 
+/*
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.commentField){
-
             showCommentDialog();
         }
     }
+*/
 
     private void showCommentDialog() {
+        commentField.setImeOptions(EditorInfo.IME_ACTION_SEND);
+        commentField.setRawInputType(InputType.TYPE_CLASS_TEXT);
 
-        dialog = new BottomSheetDialog(this);
-        View commentView = LayoutInflater.from(this).inflate(R.layout.comment_dialog_layout,null);
-        final EditText commentText = (EditText) commentView.findViewById(R.id.dialog_comment_et);
-        final Button commentField = (Button) commentView.findViewById(R.id.dialog_comment_bt);
-        dialog.setContentView(commentView);
+        userImg.setVisibility(View.GONE);
 
-        commentText.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-
-        commentText.setImeOptions(EditorInfo.IME_ACTION_SEND);
-        commentText.setRawInputType(InputType.TYPE_CLASS_TEXT);
-
-        View parent = (View) commentView.getParent();
-        BottomSheetBehavior behavior = BottomSheetBehavior.from(parent);
-        commentView.measure(0,0);
-        behavior.setPeekHeight(commentView.getMeasuredHeight());
-
-        commentField.setOnClickListener(new View.OnClickListener() {
-
+        shareCommentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                String commentContent = commentText.getText().toString().trim();
+                String commentContent = commentField.getText().toString().trim();
                 if(!TextUtils.isEmpty(commentContent)){
-
-                    //commentOnWork(commentContent);
-                    dialog.dismiss();
-
-                    //sendComment.setVisibility(View.INVISIBLE);
+                    commentField.getText().clear();
+                    commentField.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(commentField.getWindowToken(), 0);
 
                     DatabaseReference dRef = mDb.getReference("Comment").child(channelNumber).push();
                     String contentOfComment = commentContent;
@@ -356,14 +360,12 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
                     String instagramUserName = instaUserName;
 
 
-                    Comment comment = new Comment(contentOfComment, uid,uImg,uName,showName,instaUserName);
+                    final Comment comment = new Comment(contentOfComment, uid,uImg,uName,showName,instaUserName);
 
                     dRef.setValue(comment).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             //Toast.makeText(TvDetails.this, "Yorum eklendi", Toast.LENGTH_SHORT).show();
-                            commentField.setText("");
-                            //sendComment.setVisibility(View.VISIBLE);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -379,7 +381,7 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
                 }
             }
         });
-        commentText.addTextChangedListener(new TextWatcher() {
+        commentField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -387,10 +389,11 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(!TextUtils.isEmpty(charSequence) && charSequence.length()>2){
-                    commentField.setBackgroundColor(Color.parseColor("#F47676"));
+                if(!TextUtils.isEmpty(charSequence) && charSequence.length()>0){
+                    commentField.setTextColor(ContextCompat.getColor(TvDetails.this, R.color.gray));
+
                 }else {
-                    commentField.setBackgroundColor(Color.parseColor("#D8D8D8"));
+                    commentField.setTextColor(ContextCompat.getColor(TvDetails.this, R.color.hintColor));
                 }
             }
 
@@ -399,7 +402,15 @@ public class TvDetails extends AppCompatActivity implements View.OnClickListener
 
             }
         });
-        dialog.show();
+    }
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (getCurrentFocus() != null) {
+            userImg.setVisibility(View.VISIBLE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
     private void getInstaUserName(){
