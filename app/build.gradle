@@ -5,7 +5,7 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
     defaultConfig {
-        applicationId "com.example.makecomment"
+        applicationId "com.derikumas.makecomment"
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 7
