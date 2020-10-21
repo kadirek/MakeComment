@@ -1,4 +1,4 @@
-package com.derikumas.makecomment;
+package com.kadirek.yorumyap;
 
 import org.junit.Test;
 

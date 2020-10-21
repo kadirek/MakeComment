@@ -1,4 +1,4 @@
-package com.derikumas.makecomment.Adapters;
+package com.kadirek.yorumyap.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,9 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.derikumas.makecomment.Activities.TvDetails;
-import com.derikumas.makecomment.Models.ParseItem;
-import com.derikumas.makecomment.R;
+import com.kadirek.yorumyap.Activities.TvDetails;
+import com.kadirek.yorumyap.Models.ParseItem;
+import com.kadirek.yorumyap.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
     private String kanalYedi = "https://www.canlitv.vin/kanallar/kanal-7-canli-hd-izle-1.png";
     private String haberGlobal = "https://www.canlitv.vin/kanallar/haber-global.gif";
     private String dmax = "https://www.canlitv.vin/kanallar/d-max.png";
-    private String remainText = "Birazdan başlayacak";
+    private String remainText = "Birazdan bitecek";
     private int remain = 600;
 
     private ArrayList<ParseItem> parseItems;
@@ -55,9 +55,7 @@ public class ParseAdapter extends RecyclerView.Adapter<ParseAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ParseAdapter.ViewHolder holder, int position) {
         ParseItem parseItem = parseItems.get(position);
 
-        Log.d(TAG, "suankidurumu "+ parseItem.getClicked());
-
-
+        //Log.d(TAG, "suankidurumu "+ parseItem.getClicked());
         if(position % 2==0){
             holder.constraintLayoutMain.setBackgroundResource(R.drawable.gradient_odd);
             }else if(position % 2==1){

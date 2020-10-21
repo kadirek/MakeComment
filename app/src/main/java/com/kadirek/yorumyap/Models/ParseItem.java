@@ -1,4 +1,4 @@
-package com.derikumas.makecomment.Models;
+package com.kadirek.yorumyap.Models;
 
 import com.google.firebase.database.ServerValue;
 

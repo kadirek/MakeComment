@@ -1,4 +1,4 @@
-package com.derikumas.makecomment.Models;
+package com.kadirek.yorumyap.Models;
 
 public class TimeAgo {
     private static final int SECOND_MILLIS = 1000;

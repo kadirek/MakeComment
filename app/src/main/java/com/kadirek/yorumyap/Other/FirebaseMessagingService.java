@@ -1,4 +1,4 @@
-package com.derikumas.makecomment.Other;
+package com.kadirek.yorumyap.Other;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,8 +10,8 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
-import com.derikumas.makecomment.Activities.MainActivity;
-import com.derikumas.makecomment.R;
+import com.kadirek.yorumyap.Activities.MainActivity;
+import com.kadirek.yorumyap.R;
 import com.google.firebase.messaging.RemoteMessage;
 
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {

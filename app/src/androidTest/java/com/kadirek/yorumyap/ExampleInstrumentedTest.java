@@ -1,4 +1,4 @@
-package com.derikumas.makecomment;
+package com.kadirek.yorumyap;
 
 import android.content.Context;
 
@@ -21,7 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-
-        assertEquals("com.example.makecomment", appContext.getPackageName());
+        assertEquals("com.kadirek.yorumyap", appContext.getPackageName());
     }
 }

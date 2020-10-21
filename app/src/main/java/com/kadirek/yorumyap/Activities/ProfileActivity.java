@@ -1,11 +1,9 @@
-package com.derikumas.makecomment.Activities;
+package com.kadirek.yorumyap.Activities;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,8 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.derikumas.makecomment.Models.OpenDialogForInsta;
-import com.derikumas.makecomment.R;
+import com.kadirek.yorumyap.Models.OpenDialogForInsta;
+import com.kadirek.yorumyap.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -54,9 +52,9 @@ public class ProfileActivity extends AppCompatActivity implements OpenDialogForI
     private String commentInstaUserName;
     private String userUidGoggle;
 
-    private SharedPreferences myPrefs;
+   /* private SharedPreferences myPrefs;
     private SharedPreferences.Editor editor;
-    private String userImageUrlShared;
+    private String userImageUrlShared;*/
 
 
     @Override
@@ -85,9 +83,9 @@ public class ProfileActivity extends AppCompatActivity implements OpenDialogForI
 
         GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
 
-        myPrefs = getApplicationContext().getSharedPreferences("MyPref", 0);
+       /* myPrefs = getApplicationContext().getSharedPreferences("MyPref", 0);
         editor = myPrefs.edit();
-        userImageUrlShared = myPrefs.getString("key_name_imageurl",null);
+        userImageUrlShared = myPrefs.getString("key_name_imageurl",null);*/
         try {
             commentUserUid = getIntent().getExtras().getString("getUserUid");
             commentUserName = getIntent().getExtras().getString("getUserName");
@@ -100,7 +98,7 @@ public class ProfileActivity extends AppCompatActivity implements OpenDialogForI
         }
 
         if (!(commentUserUid == null || commentUserUid.equals("") || commentUserUid.equals("null") || commentUserUid.isEmpty()) && (commentUserUid == userUidGoggle||commentUserUid.equals(userUidGoggle))){
-            Picasso.get().load(userImageUrlShared).into(profilePic);
+            Picasso.get().load(signInAccount.getPhotoUrl()).into(profilePic);
             getDataFromGoogleWithFirebase();
         } else if (!(commentUserName == null || commentUserName.equals("") || commentUserName.equals("null") || commentUserName.isEmpty())) {
             Picasso.get().load(commentUserImage).into(profilePic);
@@ -111,7 +109,7 @@ public class ProfileActivity extends AppCompatActivity implements OpenDialogForI
             constraintLayout.setVisibility(View.GONE);
             whenInstaUserExist(commentInstaUserName);
         }else if(signInAccount != null || !signInAccount.equals("")){
-            Picasso.get().load(userImageUrlShared).into(profilePic);
+            Picasso.get().load(signInAccount.getPhotoUrl()).into(profilePic);
             getDataFromGoogleWithFirebase();
 
         }
@@ -140,15 +138,15 @@ public class ProfileActivity extends AppCompatActivity implements OpenDialogForI
         mDb.getReference().child("Users").child(userKey).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-               /* String userName = String.valueOf(dataSnapshot.child("Personal Informations").child("ad").getValue());
+                String userName = String.valueOf(dataSnapshot.child("Personal Informations").child("ad").getValue());
                 String userEmail = String.valueOf(dataSnapshot.child("Personal Informations").child("email").getValue());
-               */ String userInstagram = String.valueOf(dataSnapshot.child("Personal Informations").child("instaUserName").getValue());
+                String userInstagram = String.valueOf(dataSnapshot.child("Personal Informations").child("instaUserName").getValue());
 
-                String userNameShared = myPrefs.getString("key_name_username",null);
-                String userEmailShared = myPrefs.getString("key_name_email",null);
+              /*  String userNameShared = myPrefs.getString("key_name_username",null);
+                String userEmailShared = myPrefs.getString("key_name_email",null);*/
 
-                nameTextView.setText(userNameShared);
-                emailTextView.setText(userEmailShared);
+                nameTextView.setText(userName);
+                emailTextView.setText(userEmail);
                 if(userInstagram.equals("Eklenmedi")){
                     instagramTextView.setText("Eklenmedi! Hemen ekle...");
                 whenInstaUserNotExist();
@@ -231,8 +229,8 @@ public class ProfileActivity extends AppCompatActivity implements OpenDialogForI
 
     private void signOutG() {//Choose everytime different account
         // Firebase sign out
-        editor.clear();
-        editor.commit();
+      /*  editor.clear();
+        editor.commit();*/
         mAuth.signOut();
 
         // Google sign out

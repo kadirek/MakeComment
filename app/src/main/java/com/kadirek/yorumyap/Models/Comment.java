@@ -1,35 +1,45 @@
-package com.derikumas.makecomment.Models;
+package com.kadirek.yorumyap.Models;
 
 import com.google.firebase.database.ServerValue;
 
 public class Comment {
 
-    private String content,uid,uimg,uname,showName,instaUserName;
+    private String content,uid,uimg,uname,showName,instaUserName,endTimePython;
     private Object timestamp;
 
 
     public Comment() {
     }
 
-    public Comment(String content, String uid, String uimg, String uname, String showName, String instaUserName) {
+    public Comment(String content, String uid, String uimg, String uname, String showName, String instaUserName, String endTimePython) {
         this.content = content;
         this.uid = uid;
         this.uimg = uimg;
         this.uname = uname;
         this.showName = showName;
         this.instaUserName = instaUserName;
+        this.endTimePython = endTimePython;
         this.timestamp = ServerValue.TIMESTAMP;
 
     }
 
-    public Comment(String content, String uid, String uimg, String uname, String showName, String instaUserName, Object timestamp) {
+    public Comment(String content, String uid, String uimg, String uname, String showName, String instaUserName,String endTimePython, Object timestamp) {
         this.content = content;
         this.uid = uid;
         this.uimg = uimg;
         this.uname = uname;
         this.showName = showName;
         this.instaUserName= instaUserName;
+        this.endTimePython= endTimePython;
         this.timestamp = timestamp;
+    }
+
+    public String getEndTimePython() {
+        return endTimePython;
+    }
+
+    public void setEndTimePython(String endTimePython) {
+        this.endTimePython = endTimePython;
     }
 
     public String getInstaUserName() {

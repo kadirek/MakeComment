@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.derikumas.makecomment">
+    package="com.kadirek.yorumyap">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
 
     <application
         android:allowBackup="true"
@@ -11,20 +12,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.derikumas.makecomment.Activities.TvDetails"
+        <activity android:name="com.kadirek.yorumyap.Activities.TvDetails"
             android:windowSoftInputMode="adjustResize"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
-        <activity android:name="com.derikumas.makecomment.Activities.ProfileActivity"
+        <activity android:name="com.kadirek.yorumyap.Activities.ProfileActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
-        <activity android:name="com.derikumas.makecomment.Activities.RegisterActvity"
+        <activity android:name="com.kadirek.yorumyap.Activities.RegisterActvity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
-        <activity android:name="com.derikumas.makecomment.Activities.LoginActivity"
+        <activity android:name="com.kadirek.yorumyap.Activities.LoginActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
-        <activity android:name="com.derikumas.makecomment.Activities.MainActivity"
+        <activity android:name="com.kadirek.yorumyap.Activities.MainActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -34,14 +35,14 @@
             </intent-filter>
         </activity>
         <service
-            android:name="com.derikumas.makecomment.Other.MyInstanceIDListenerService"
+            android:name="com.kadirek.yorumyap.Other.MyInstanceIDListenerService"
             android:permission="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
         <service
-            android:name="com.derikumas.makecomment.Other.FirebaseMessagingService"
+            android:name="com.kadirek.yorumyap.Other.FirebaseMessagingService"
             android:enabled="false"
             android:exported="false" />
 

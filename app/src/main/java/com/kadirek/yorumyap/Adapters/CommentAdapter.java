@@ -1,4 +1,4 @@
-package com.derikumas.makecomment.Adapters;
+package com.kadirek.yorumyap.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,10 +12,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.derikumas.makecomment.Activities.ProfileActivity;
-import com.derikumas.makecomment.Models.Comment;
-import com.derikumas.makecomment.Models.TimeAgo;
-import com.derikumas.makecomment.R;
+import com.kadirek.yorumyap.Activities.ProfileActivity;
+import com.kadirek.yorumyap.Models.Comment;
+import com.kadirek.yorumyap.Models.TimeAgo;
+import com.kadirek.yorumyap.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

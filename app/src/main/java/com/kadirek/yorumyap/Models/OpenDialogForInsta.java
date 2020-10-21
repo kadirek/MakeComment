@@ -1,4 +1,4 @@
-package com.derikumas.makecomment.Models;
+package com.kadirek.yorumyap.Models;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
-import com.derikumas.makecomment.R;
+import com.kadirek.yorumyap.R;
 
 public class OpenDialogForInsta extends AppCompatDialogFragment {
 

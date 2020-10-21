@@ -1,4 +1,4 @@
-package com.derikumas.makecomment.Other;
+package com.kadirek.yorumyap.Other;
 
 import com.google.firebase.messaging.RemoteMessage;
 

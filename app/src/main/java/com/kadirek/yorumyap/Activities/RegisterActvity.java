@@ -1,10 +1,10 @@
-package com.derikumas.makecomment.Activities;
+package com.kadirek.yorumyap.Activities;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.derikumas.makecomment.R;
+import com.kadirek.yorumyap.R;
 
 public class RegisterActvity extends AppCompatActivity {
 

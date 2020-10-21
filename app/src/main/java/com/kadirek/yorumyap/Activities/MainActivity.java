@@ -1,4 +1,4 @@
-package com.derikumas.makecomment.Activities;
+package com.kadirek.yorumyap.Activities;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -20,9 +20,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.derikumas.makecomment.Adapters.ParseAdapter;
-import com.derikumas.makecomment.Models.ParseItem;
-import com.derikumas.makecomment.R;
+import com.kadirek.yorumyap.Adapters.ParseAdapter;
+import com.kadirek.yorumyap.Models.ParseItem;
+import com.kadirek.yorumyap.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;

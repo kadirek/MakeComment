@@ -1,4 +1,4 @@
-package com.derikumas.makecomment.Models;
+package com.kadirek.yorumyap.Models;
 
 public class User2{
     public String ad, email;
