@@ -7,6 +7,7 @@ You can find people who liked to watched same Tv shows with you in this App. You
 | Google Play Name | Url |
 | ------ | ------ |
 | Yorum Yap | https://play.google.com/store/apps/details?id=com.kadirek.yorumyap&hl=tr |
+| Youtube | https://www.youtube.com/watch?v=fH_vSKwbThM |
 
 ## Example Images
 
